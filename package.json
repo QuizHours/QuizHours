@@ -1,0 +1,23 @@
+{
+  "name": "QuizHours",
+  "version": "0.0.0",
+  "description": "Tool for TA's to help students bridge knowledge gap between lecture and homework.",
+  "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/QuizHours/QuizHours.git"
+  },
+  "author": "glewis17",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/QuizHours/QuizHours/issues"
+  },
+  "dependencies": {
+    "logfmt": "~1.1.2",
+    "ws": "0.4.x",
+    "express": "~4.4.5"
+  }
+}

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html ng-app="QuizHours">
 <head>
-	<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="main.css" />
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.min.js"></script>
 	<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
@@ -18,6 +19,56 @@
 	</script>
 </head>
 <body>
-	<h1>QuizHours</h1>
+
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">QuizHours</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#quiz1">Quiz 1</a></li>
+          <li><a href="#quiz2">Quiz 2</a></li>
+          <li><a href="#quiz3">Quiz 3</a></li>
+        </ul>
+      </div><!--/.navbar-collapse -->
+    </div>
+  </div>
+    
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-2 sidebar">
+      <!--<div class="col-4 sidebar">-->
+        <ul class="nav nav-sidebar">
+          <li class="active"><a href="#q1">Question 1</a></li>
+          <li><a href="#q2">Question 2</a></li>
+          <li><a href="#q3">Question 3</a></li>
+          <li><a href="#q4">Question 4</a></li>
+        </ul>
+      </div>
+      <div id="question-content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+        <h1>Question1</h1>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    $('.navbar-nav > li').on('click', function(){
+      $('.navbar-nav > .active').removeClass('active');
+      $(this).addClass('active');
+    });
+  
+    $('.nav-sidebar > li').on('click', function(){
+      $('.nav-sidebar > .active').removeClass('active');
+      $(this).addClass('active');
+      $('#question-content > h1').html($(this).text());
+    });
+  </script>
 </body>
 </html>

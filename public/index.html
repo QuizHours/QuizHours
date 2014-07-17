@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="QuizHours">
+<html ng-app="quizHoursApp">
 <head>
 	<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
 	<link rel="stylesheet" type="text/css" href="main.css" />
@@ -18,7 +18,7 @@
 		};*/
 	</script>
 </head>
-<body>
+<body ng-controller="QuizCtrl">
 
   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
@@ -33,9 +33,12 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#quiz1">Quiz 1</a></li>
+          <li ng-repeat="quiz in course.quizzes">
+            <a href="#quiz{{$index + 1}}">Quiz {{$index + 1}}</a>
+          </li>
+          <!--<li class="active"><a href="#quiz1">Quiz 1</a></li>
           <li><a href="#quiz2">Quiz 2</a></li>
-          <li><a href="#quiz3">Quiz 3</a></li>
+          <li><a href="#quiz3">Quiz 3</a></li>-->
         </ul>
       </div><!--/.navbar-collapse -->
     </div>
@@ -44,22 +47,31 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-3 col-md-2 sidebar">
-      <!--<div class="col-4 sidebar">-->
         <ul class="nav nav-sidebar">
-          <li class="active"><a href="#q1">Question 1</a></li>
+          <li ng-repeat="question in course.quizzes[quizSelected]">
+            <a href="#q{{$index + 1}}">{{$index + 1}}) {{question.concept}}</a>
+          </li>
+          <!--<li class="active"><a href="#q1">Question 1</a></li>
           <li><a href="#q2">Question 2</a></li>
           <li><a href="#q3">Question 3</a></li>
-          <li><a href="#q4">Question 4</a></li>
+          <li><a href="#q4">Question 4</a></li>-->
         </ul>
       </div>
+      
       <div id="question-content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
-        <h1>Question1</h1>
+        <h1>{{currentQuestion.concept}}</h1>
+        <p>{{currentQuestion.question}}</p>
+        <ul>
+          <li class="btn btn-default" ng-repeat="answer in currentQuestion.answers">
+            {{answer.content}}
+          </li>
+        </ul>
       </div>
     </div>
   </div>
   
   <script>
-    $('.navbar-nav > li').on('click', function(){
+    /*$('.navbar-nav > li').on('click', function(){
       $('.navbar-nav > .active').removeClass('active');
       $(this).addClass('active');
     });
@@ -68,7 +80,7 @@
       $('.nav-sidebar > .active').removeClass('active');
       $(this).addClass('active');
       $('#question-content > h1').html($(this).text());
-    });
+    });*/
   </script>
 </body>
 </html>

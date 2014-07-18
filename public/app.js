@@ -7,19 +7,31 @@
           $scope.quizSelected = 0;
           $scope.questionSelected = 0;
           $scope.currentQuestion = $scope.course.quizzes[$scope.quizSelected][$scope.questionSelected];
+          $scope.answerResponse = '';
+          $scope.currentAnswer = {};
       });
-      $scope.setQuiz = function(index){
-        $scope.quizSelected = index;
-        $scope.setCurrentQuestion(index, 0);
+      $scope.setQuiz = function(quizIndex){
+        $scope.setCurrentQuestion(quizIndex, 0);
       };
-      $scope.setQuestion = function(index){
-        $scope.questionSelected = index;
-        $scope.setCurrentQuestion($scope.quizSelected, index);
+      $scope.setQuestion = function(questionIndex){
+        $scope.setCurrentQuestion($scope.quizSelected, questionIndex);
       };
       $scope.setCurrentQuestion = function(quizIndex, questionIndex){
+        $scope.currentAnswer = {};  //Clear previous answer for new question
+        $scope.quizSelected = quizIndex;
+        $scope.questionSelected = questionIndex;
         $scope.currentQuestion = $scope.course.quizzes[quizIndex][questionIndex];
       };
-      
+      $scope.selectAnswer = function(answerIndex){
+        $scope.currentAnswer = {};  //Clear previous answer
+        $scope.currentAnswer = $scope.currentQuestion.answers[answerIndex];
+        if ($scope.currentAnswer.isCorrect){
+          $scope.answerResponse = $scope.currentQuestion.explanation;
+          
+        } else {
+          $scope.answerResponse = $scope.currentQuestion.hint;
+        }
+      };
   }]);
   
 })();

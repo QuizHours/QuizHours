@@ -30,16 +30,13 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">{{course.name}}</a>
+        <a class="navbar-brand" ng-click="setQuiz(0);setQuestion(0)" >{{course.name}}</a>
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <li ng-repeat="quiz in course.quizzes">
+          <li ng-class="{active:$index==quizSelected}" ng-repeat="quiz in course.quizzes">
             <a href="#quiz{{$index + 1}}" ng-click="setQuiz($index)">Quiz {{$index + 1}}</a>
           </li>
-          <!--<li class="active"><a href="#quiz1">Quiz 1</a></li>
-          <li><a href="#quiz2">Quiz 2</a></li>
-          <li><a href="#quiz3">Quiz 3</a></li>-->
         </ul>
       </div><!--/.navbar-collapse -->
     </div>
@@ -49,13 +46,9 @@
     <div class="row">
       <div class="col-sm-3 col-md-2 sidebar">
         <ul class="nav nav-sidebar">
-          <li ng-repeat="question in course.quizzes[quizSelected]">
-            <a href="#q{{$index + 1}}" ng-click="setQuestion($index)">{{$index + 1}}) {{question.concept}}</a>
+          <li ng-class="{'active':$index==questionSelected}" ng-repeat="question in course.quizzes[quizSelected]">
+            <a href="#" ng-click="setQuestion($index)">{{$index + 1}}) {{question.concept}}</a>
           </li>
-          <!--<li class="active"><a href="#q1">Question 1</a></li>
-          <li><a href="#q2">Question 2</a></li>
-          <li><a href="#q3">Question 3</a></li>
-          <li><a href="#q4">Question 4</a></li>-->
         </ul>
       </div>
       
@@ -63,25 +56,17 @@
         <h1>{{currentQuestion.concept}}</h1>
         <p>{{currentQuestion.question}}</p>
         <ul>
-          <li class="btn btn-default" ng-repeat="answer in currentQuestion.answers">
+          <li class="answer btn" ng-click="selectAnswer($index)" ng-repeat="answer in currentQuestion.answers"
+              ng-class="{ 'btn-default':(currentAnswer.content!=answer.content),
+                          'btn-success':(currentAnswer.content==answer.content && currentAnswer.isCorrect),
+                          'btn-danger':(currentAnswer.content==answer.content && !currentAnswer.isCorrect)}">
             {{answer.content}}
           </li>
         </ul>
+        <p id="answer-response">{{answerResponse}}</p>
       </div>
     </div>
   </div>
   
-  <script>
-    /*$('.navbar-nav > li').on('click', function(){
-      $('.navbar-nav > .active').removeClass('active');
-      $(this).addClass('active');
-    });
-  
-    $('.nav-sidebar > li').on('click', function(){
-      $('.nav-sidebar > .active').removeClass('active');
-      $(this).addClass('active');
-      $('#question-content > h1').html($(this).text());
-    });*/
-  </script>
 </body>
 </html>

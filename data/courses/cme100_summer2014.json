@@ -12,15 +12,15 @@
           "isCorrect": true
         },
         {
-          "content": "Wrong answer", 
+          "content": "Wrong answer 1", 
           "isCorrect": false
         },
         {
-          "content": "Wrong answer", 
+          "content": "Wrong answer 2", 
           "isCorrect": false
         },
         {
-          "content": "Wrong answer", 
+          "content": "Wrong answer 3", 
           "isCorrect": false
         }
       ],
@@ -46,6 +46,14 @@
         {
           "content": 4, 
           "isCorrect": false
+        },
+        {
+          "content": 5, 
+          "isCorrect": false
+        },
+        {
+          "content": "6 - 4", 
+          "isCorrect": true
         }
       ],
       "hint": "Try 4 - 2!",
@@ -62,15 +70,15 @@
           "isCorrect": true
         },
         {
-          "content": "Wrong answer", 
+          "content": "Wrong answer 1", 
           "isCorrect": false
         },
         {
-          "content": "Wrong answer", 
+          "content": "Wrong answer 2", 
           "isCorrect": false
         },
         {
-          "content": "Wrong answer", 
+          "content": "Wrong answer 3", 
           "isCorrect": false
         }
       ],
@@ -86,15 +94,15 @@
           "isCorrect": true
         },
         {
-          "content": "Wrong answer", 
+          "content": "Wrong answer 1", 
           "isCorrect": false
         },
         {
-          "content": "Wrong answer", 
+          "content": "Wrong answer 2", 
           "isCorrect": false
         },
         {
-          "content": "Wrong answer", 
+          "content": "Wrong answer 3", 
           "isCorrect": false
         }
       ],

@@ -6,9 +6,10 @@
           $scope.course = data;
           $scope.quizSelected = 0;
           $scope.questionSelected = 0;
-          $scope.currentQuestion = $scope.course.quizzes[$scope.quizSelected][$scope.questionSelected];
           $scope.answerResponse = '';
           $scope.currentAnswer = {};
+          $scope.currentQuiz = $scope.course.quizzes[$scope.quizSelected];
+          $scope.currentQuestion = $scope.currentQuiz[$scope.questionSelected];
       });
       $scope.setQuiz = function(quizIndex){
         $scope.setCurrentQuestion(quizIndex, 0);

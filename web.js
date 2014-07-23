@@ -3,7 +3,7 @@
 
 var WebSocketServer = require('ws').Server,
   MongoClient = require('mongodb').MongoClient,
-  MongoServer = require('mongodb').Server,
+  //MongoServer = require('mongodb').Server,
   fs = require('fs'),
 	http = require('http'),
 	path = require('path'),

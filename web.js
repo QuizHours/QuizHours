@@ -2,6 +2,8 @@
 //https://github.com/heroku-examples/node-ws-test/blob/master/server.js
 
 var WebSocketServer = require('ws').Server,
+  MongoClient = require('mongodb').MongoClient,
+  MongoServer = require('mongodb').Server,
   fs = require('fs'),
 	http = require('http'),
 	path = require('path'),
@@ -10,6 +12,21 @@ var WebSocketServer = require('ws').Server,
 	port = process.env.PORT || 5000,
   router = express.Router();
 
+MongoClient.connect(process.env.MONGOHQ_URL, function(err, db){
+//MongoClient.connect(new MongoServer('localhost', 27017), function(err, db){
+  if(err) throw err;
+  var collection = db.collection('test_insert');
+  collection.insert({a:2}, function(err, docs){
+      collection.count(function(err, count){
+          console.log(format("count = %s", count));
+      });
+  });  
+  collection.find().toArray(function(err, results){
+      console.dir(results);
+      db.close();
+  });
+});
+  
 router.route('/courses/:filename')
 
   .get(function(req, res){

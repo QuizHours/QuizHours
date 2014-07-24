@@ -10,15 +10,13 @@ var WebSocketServer = require('ws').Server,
 	express = require('express'),
 	app = express(),
 	port = process.env.PORT || 5000,
-	mongoUri = process.env.MONGOHQ_URL || 'mongodb://localhost:27017';
+	mongoUri = process.env.MONGOHQ_URL || 'mongodb://localhost:27017',
   router = express.Router();
 
-//MongoClient.connect(process.env.MONGOHQ_URL, function(err, db){
 MongoClient.connect(mongoUri, function(err, db){
   if(err) throw err;
   db.collection('test_insert').drop(); //clear collection for time being while testing
   var collection = db.collection('test_insert');
-  //var initialCourse = getCourseFromFile('cme100_summer2014.json');
   var filename = 'cme100_summer2014.json';
   fs.readFile(path.join(process.cwd(), '/data/courses/'+filename), 'utf8', function(err, data){
     var initialCourse;
@@ -26,35 +24,15 @@ MongoClient.connect(mongoUri, function(err, db){
       console.log('error reading from file');
       return;
     } else {
-      console.log(data);
       initialCourse = JSON.parse(data);
     }
-    console.log('initialCourse is '+initialCourse);
     collection.insert(initialCourse, function(err, docs){
-        collection.count(function(err, count){
-            //console.log(format("count = %s", count));
-	    console.log('Object stored!');
-        });
-    });  
-    collection.find().toArray(function(err, results){
-        console.dir(results);
-        db.close();
+      collection.find().toArray(function(err, results){
+          db.close();
+      });
     });
   });
 });
-  
-/*var getCourseFromFile = function(filename){
-  fs.readFile(path.join(process.cwd(),'/data/courses/'+filename), 'utf8', function(err, data){
-    console.log(filename);
-    if(err){
-      console.log('error reading from file');
-      return;
-    } else {
-      console.log(data);
-      return JSON.parse(data);
-    }
-  });
-};*/
 
 router.route('/courses/:filename')
 

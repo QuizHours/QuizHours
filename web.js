@@ -34,10 +34,18 @@ MongoClient.connect(mongoUri, function(err, db){
   });
 });
 
-router.route('/courses/:filename')
+router.route('/courses/:coursecode')
 
   .get(function(req, res){
     //retrieve requested file from mongodb
+    MongoClient.connect(mongoUri, function(err, db){
+        if(err) throw err;
+        var collection = db.collection('test_insert');
+        collection.find().toArray(function(err, results){
+            res.json(results);
+            db.close();
+        });
+    });
     /*fs.readFile(path.join(process.cwd(),'/data/courses/'+req.params.filename), 'utf8', function(err, data){
       if (err){
         res.send(err);
@@ -47,7 +55,7 @@ router.route('/courses/:filename')
     });*/
   });
 
-app.use('/data', router);
+app.use('/api', router);
 
 app.use(express.static(__dirname + '/public'));
 

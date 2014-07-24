@@ -1,9 +1,17 @@
 (function(){
   var quizHoursApp = angular.module('quizHoursApp',[]);
 
+  var mathjax = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
   quizHoursApp.controller('QuizCtrl', ['$scope', '$http', function($scope, $http){
-      $http.get('../data/courses/cme100_summer2014.json').success(function(data){
-          $scope.course = data;
+      $http.get('http://localhost:5000/api/courses/vadim1337').success(function(data){
+          console.log(data);
+          if(typeof(data) == 'string'){
+            $scope.course = JSON.parse(data);
+          } else {
+            $scope.course = data;
+          }
+          $scope.mathjax = mathjax;
+          $scope.course = $scope.course[0];
           $scope.quizSelected = 0;
           $scope.questionSelected = 0;
           $scope.answerResponse = '';

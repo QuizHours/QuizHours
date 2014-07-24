@@ -17,17 +17,24 @@ MongoClient.connect(mongoUri, function(err, db){
   if(err) throw err;
   db.collection('test_insert').drop(); //clear collection for time being while testing
   var collection = db.collection('test_insert');
-  var filename = 'cme100_summer2014.json';
+  //var filename = 'cme100_summer2014.json';
+  var filename = 'course-template2.json';
   fs.readFile(path.join(process.cwd(), '/data/courses/'+filename), 'utf8', function(err, data){
     var initialCourse;
     if(err){
       console.log('error reading from file');
       return;
     } else {
+      data = data.split("\\").join("\\\\");
+      data = data.split("$").join("$$");
+      //data = JSON.stringify(data).replaceAll("\\", "*");
       initialCourse = JSON.parse(data);
+      //initialCourse = data;
+      //console.log(data);
     }
     collection.insert(initialCourse, function(err, docs){
       collection.find().toArray(function(err, results){
+          if(err) throw err;
           db.close();
       });
     });
@@ -46,13 +53,6 @@ router.route('/courses/:coursecode')
             db.close();
         });
     });
-    /*fs.readFile(path.join(process.cwd(),'/data/courses/'+req.params.filename), 'utf8', function(err, data){
-      if (err){
-        res.send(err);
-      } else {
-        res.json(JSON.parse(data)); //JSON.parse needed to convert string to JSON object
-      }
-    });*/
   });
 
 app.use('/api', router);

@@ -1,0 +1,225 @@
+{
+  "classcode": "vadim1337",
+  "name": "CME100",
+  "password": "testing007",
+  "quizzes": [[
+    { 
+      "concept": "Vectors in the Plane",
+      "question": "Let $u=(3,-2)$ and $v=(-2,5)$. Find the component form and magnitude of the vector $w=-2u+5v$",
+      "answers": [
+        {
+          "content": "Right answer", 
+          "isCorrect": true
+        },
+        {
+          "content": "Wrong answer 1", 
+          "isCorrect": false
+        },
+        {
+          "content": "Wrong answer 2", 
+          "isCorrect": false
+        },
+        {
+          "content": "Wrong answer 3", 
+          "isCorrect": false
+        }
+      ],
+      "hint": "Hint goes here",
+      "explanation": "Why is the right answer right"
+    },
+    {
+      "concept": "Vectors in the Plane",
+      "question": "What is the component form of the unit vector that makes an angle $2\pi/3$ with the positive x-axis?",
+      "answers": [
+        {
+          "content": 1, 
+          "isCorrect": false
+        },
+        {
+          "content": 2, 
+          "isCorrect": true
+        },
+        {
+          "content": 3, 
+          "isCorrect": false
+        },
+        {
+          "content": 4, 
+          "isCorrect": false
+        }
+      ],
+      "hint": "Try 4 - 2!",
+      "explanation": "One stick and one stick makes two sticks."
+    },
+    {
+      "concept": "Vectors in Space",
+      "question": "What is the component form of the vector $\vec{P_1P_2}$ if $P_1$ is the point $(5,7,-1)$?",
+      "answers": [
+        {
+          "content": 1, 
+          "isCorrect": false
+        },
+        {
+          "content": 2, 
+          "isCorrect": true
+        },
+        {
+          "content": 3, 
+          "isCorrect": false
+        },
+        {
+          "content": 4, 
+          "isCorrect": false
+        }
+      ],
+      "hint": "Try 4 - 2!",
+      "explanation": "One stick and one stick makes two sticks."
+    },
+    {
+      "concept": "Vectors in Space",
+      "question": "What is the component form of the vector $5u-v$ if $u=(1,1,-1)$ and $v=(2,0,3)$?",
+      "answers": [
+        {
+          "content": 1, 
+          "isCorrect": false
+        },
+        {
+          "content": 2, 
+          "isCorrect": true
+        },
+        {
+          "content": 3, 
+          "isCorrect": false
+        },
+        {
+          "content": 4, 
+          "isCorrect": false
+        }
+      ],
+      "hint": "Try 4 - 2!",
+      "explanation": "One stick and one stick makes two sticks."
+    },
+    {
+      "concept": "Length and Direction",
+      "question": "What is the expression of the vector $9i-2j+6k$ as a product of its length and direction?",
+      "answers": [
+        {
+          "content": 1, 
+          "isCorrect": false
+        },
+        {
+          "content": 2, 
+          "isCorrect": true
+        },
+        {
+          "content": 3, 
+          "isCorrect": false
+        },
+        {
+          "content": 4, 
+          "isCorrect": false
+        }
+      ],
+      "hint": "Try 4 - 2!",
+      "explanation": "One stick and one stick makes two sticks."
+    },
+    {
+      "concept": "Length and Direction",
+      "question": "What is the vector whose length is $7$ and direction is $-j$?",
+      "answers": [
+        {
+          "content": 1, 
+          "isCorrect": false
+        },
+        {
+          "content": 2, 
+          "isCorrect": true
+        },
+        {
+          "content": 3, 
+          "isCorrect": false
+        },
+        {
+          "content": 4, 
+          "isCorrect": false
+        }
+      ],
+      "hint": "Try 4 - 2!",
+      "explanation": "One stick and one stick makes two sticks."
+    },
+    {
+      "concept": "Direction",
+      "question": "What is the direction of $\vec{P_1P_2}$, where $P_1=(3,4,5)$ and $P_2=(2,3,4)$?",
+      "answers": [
+        {
+          "content": 1, 
+          "isCorrect": false
+        },
+        {
+          "content": 2, 
+          "isCorrect": true
+        },
+        {
+          "content": 3, 
+          "isCorrect": false
+        },
+        {
+          "content": 4, 
+          "isCorrect": false
+        }
+      ],
+      "hint": "Try 4 - 2!",
+      "explanation": "One stick and one stick makes two sticks."
+    }
+  ],
+  [
+    {
+      "concept": "Multiplication",
+      "question": "What is 2 * 2?",
+      "answers": [
+        {
+          "content": "Right answer! :D", 
+          "isCorrect": true
+        },
+        {
+          "content": "Wrong answer", 
+          "isCorrect": false
+        },
+        {
+          "content": "Wrong answer", 
+          "isCorrect": false
+        },
+        {
+          "content": "Wrong answer", 
+          "isCorrect": false
+        }
+      ],
+      "hint": "Try 6 - 2!",
+      "explanation": "Add two to two."
+    },
+    {
+      "concept": "Division",
+      "question": "What is 6 / 2?",
+      "answers": [
+        {
+          "content": "Right answer! :D", 
+          "isCorrect": true
+        },
+        {
+          "content": "Wrong answer", 
+          "isCorrect": false
+        },
+        {
+          "content": "Wrong answer", 
+          "isCorrect": false
+        },
+        {
+          "content": "Wrong answer", 
+          "isCorrect": false
+        }
+      ],
+      "hint": "Try 4 - 1!",
+      "explanation": "Six sticks, take away half of them."
+    }
+  ]]
+}

@@ -3,7 +3,7 @@
 
   var mathjax = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
   quizHoursApp.controller('QuizCtrl', ['$scope', '$http', function($scope, $http){
-      $http.get('http://localhost:5000/api/courses/vadim1337').success(function(data){
+      $http.get('http://quizhours.herokuapp.com/api/courses/vadim1337').success(function(data){
           console.log(data);
           if(typeof(data) == 'string'){
             $scope.course = JSON.parse(data);

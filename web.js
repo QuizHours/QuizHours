@@ -17,16 +17,16 @@ MongoClient.connect(mongoUri, function(err, db){
   if(err) throw err;
   db.collection('test_insert').drop(); //clear collection for time being while testing
   var collection = db.collection('test_insert');
-  var filename = 'cme100_summer2014.json';
-  //var filename = 'course-template2.json';
+  //var filename = 'cme100_summer2014.json';
+  var filename = 'course-template2.json';
   fs.readFile(path.join(process.cwd(), '/data/courses/'+filename), 'utf8', function(err, data){
     var initialCourse;
     if(err){
       console.log('error reading from file');
       return;
     } else {
-      //data = data.split("\\").join("\\\\");
-      //data = data.split("$").join("$$");
+      data = data.split("\\").join("\\\\");
+      data = data.split("$").join("$$");
       //data = JSON.stringify(data).replaceAll("\\", "*");
       initialCourse = JSON.parse(data);
       //initialCourse = data;

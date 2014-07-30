@@ -8,19 +8,19 @@
       "question": "Let $u=(3,-2)$ and $v=(-2,5)$. Find the component form and magnitude of the vector $w=-2u+5v$",
       "answers": [
         {
-          "content": "$w=(-16,29)$ - $|w|=1097", 
+          "content": "$w=(-16,29)$ - $|w|=1097$", 
           "isCorrect": true
         },
         {
-          "content": "$w=(-16,31)$ - $|w|=1097", 
+          "content": "$w=(-16,31)$ - $|w|=1097$", 
           "isCorrect": false
         },
         {
-          "content": "$w=(-16,29)$ - $|w|=597", 
+          "content": "$w=(-16,29)$ - $|w|=597$", 
           "isCorrect": false
         },
         {
-          "content": "$w=(0,29)$ - $|w|=36", 
+          "content": "$w=(0,29)$ - $|w|=36$", 
           "isCorrect": false
         }
       ],

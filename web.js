@@ -26,7 +26,7 @@ MongoClient.connect(mongoUri, function(err, db){
       return;
     } else {
       data = data.split("\\").join("\\\\");
-      data = data.split("$").join("$$");
+      //data = data.split("$").join("$$");
       //data = JSON.stringify(data).replaceAll("\\", "*");
       initialCourse = JSON.parse(data);
       //initialCourse = data;

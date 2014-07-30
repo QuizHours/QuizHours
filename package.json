@@ -16,13 +16,14 @@
     "url": "https://github.com/QuizHours/QuizHours/issues"
   },
   "dependencies": {
-    "logfmt": "~1.1.2",
-    "ws": "0.4.x",
+    "angular-route": "~1.2.x",
+    "body-parser": "^1.5.2",
+    "bower": "~1.3.8",
     "express": "~4.4.5",
     "karma": "~0.12.17",
+    "logfmt": "~1.1.2",
+    "mongodb": "~1.4.7",
     "protractor": "~1.0.0-rc4",
-    "bower": "~1.3.8",
-    "angular-route": "~1.2.x",
-    "mongodb": "~1.4.7"
+    "ws": "0.4.x"
   }
 }

@@ -2,8 +2,8 @@
   var quizHoursApp = angular.module('quizHoursApp',[]);
 
   var MATHJAX_SOURCE = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-  var quizhoursUri = 'http://quizhours.herokuapp.com/api/courses/vadim1337';
-  //var quizhoursUri = 'http://localhost:5000/api/courses/vadim1337';
+  //var quizhoursUri = 'http://quizhours.herokuapp.com/api/courses/vadim1337';
+  var quizhoursUri = 'http://localhost:5000/api/courses/vadim1337';
   
   quizHoursApp.controller('QuizCtrl', ['$scope', '$http', function($scope, $http){
       //$http.get('http://quizhours.herokuapp.com/api/courses/vadim1337').success(function(data){

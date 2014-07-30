@@ -49,8 +49,7 @@
         }
       ],
       "hint": "What is the canonical form that can be used to described any unit vector?",
-      "explanation": "By definition, the vector $\vec{u}=\cos(\theta)\vec{i}+\sin(\theta)\vec{j}$ has magnitude 1 and makes an angle $\theta$ with the origin.
-	  The answer is then $\vec{u}=\cos(\frac{2\pi}{3})\vec{i}+\sin(\frac{2\pi}{3})\vec{j}=-\frac{\sqrt{3}}{2}\vec{i}+\frac{1}{2}\vec{j}=(-\frac{\sqrt{3}}{2},\frac{1}{2})$" 
+      "explanation": "By definition, the vector $\vec{u}=\cos(\theta)\vec{i}+\sin(\theta)\vec{j}$ has magnitude 1 and makes an angle $\theta$ with the origin. The answer is then $\vec{u}=\cos(\frac{2\pi}{3})\vec{i}+\sin(\frac{2\pi}{3})\vec{j}=-\frac{\sqrt{3}}{2}\vec{i}+\frac{1}{2}\vec{j}=(-\frac{\sqrt{3}}{2},\frac{1}{2})$" 
     },
     {
       "concept": "Vectors in Space",
@@ -122,8 +121,7 @@
         }
       ],
       "hint": "What is the question asking?",
-      "explanation": "We first compute its length (magnitude): $|u|=|9i-2j+6k|=\sqrt{9^2+(-2)^2+6^2}=\sqrt{81+4+36}=11$.
-	  Therefore we can write $u$ as follows: $u=11v$ where $v=(\frac{9}{11}i-\frac{2}{11}j+\frac{6}{11}k)$. $v$ is the direction of $u$."
+      "explanation": "We first compute its length (magnitude): $|u|=|9i-2j+6k|=\sqrt{9^2+(-2)^2+6^2}=\sqrt{81+4+36}=11$. Therefore we can write $u$ as follows: $u=11v$ where $v=(\frac{9}{11}i-\frac{2}{11}j+\frac{6}{11}k)$. $v$ is the direction of $u$."
     },
     {
       "concept": "Length and Direction",
@@ -147,9 +145,7 @@
         }
       ],
       "hint": "How do you characterize the direction of a vector? Use the constraint on the lenght to find the only vector that answers the question.",
-      "explanation": "The vector of direction $\vec{i}-\vec{j}$ can be written as $\alpha (\vec{i}-\vec{j})$, where $\alpha$ is a positive constant. The additional constraint on its length yi
-	  elds: $|\alpha (\vec{i}-\vec{j})|=7$ therefore $\alpha \sqrt{2}=7$, which is equivalent to $\alpha=\frac{7}{\sqrt{2}}$. Therefore the vector is 
-	  $\frac{7}{\sqrt{2}}\vec{i}-\frac{7}{\sqrt{2}}\vec{j})=(\frac{7}{\sqrt{2}},-\frac{7}{\sqrt{2}})$"
+      "explanation": "The vector of direction $\vec{i}-\vec{j}$ can be written as $\alpha (\vec{i}-\vec{j})$, where $\alpha$ is a positive constant. The additional constraint on its length yields: $|\alpha (\vec{i}-\vec{j})|=7$ therefore $\alpha \sqrt{2}=7$, which is equivalent to $\alpha=\frac{7}{\sqrt{2}}$. Therefore the vector is $\frac{7}{\sqrt{2}}\vec{i}-\frac{7}{\sqrt{2}}\vec{j})=(\frac{7}{\sqrt{2}},-\frac{7}{\sqrt{2}})$"
     },
     {
       "concept": "Direction",
@@ -173,8 +169,7 @@
         }
       ],
       "hint": "How do you characterize the direction of a vector?",
-      "explanation": "$\vec{P_1P_2}=\vec{P_1O}+\vec{OP_2}=-\vec{OP_1}+\vec{OP_2}=-(3,4,5)+(2,4,3)=(-1,0,-2)$. The direction of the vector 
-	  $\vec{P_1P_2}$ is therefore $-\vec{i}-2\vec{k}$, or any vector proportional to this one."
+      "explanation": "$\vec{P_1P_2}=\vec{P_1O}+\vec{OP_2}=-\vec{OP_1}+\vec{OP_2}=-(3,4,5)+(2,4,3)=(-1,0,-2)$. The direction of the vector $\vec{P_1P_2}$ is therefore $-\vec{i}-2\vec{k}$, or any vector proportional to this one."
     }
   ],
   [ 
@@ -224,8 +219,7 @@
           }
         ],
         "hint": "What is the canonical form that can be used to described any unit vector?",
-        "explanation": "By definition, the vector $\vec{u}=\cos(\theta)\vec{i}+\sin(\theta)\vec{j}$ has magnitude 1 and makes an angle $\theta$ with the origin.
-  	  The answer is then $\vec{u}=\cos(\frac{2\pi}{3})\vec{i}+\sin(\frac{2\pi}{3})\vec{j}=-\frac{\sqrt{3}}{2}\vec{i}+\frac{1}{2}\vec{j}=(-\frac{\sqrt{3}}{2},\frac{1}{2})$" 
+        "explanation": "By definition, the vector $\vec{u}=\cos(\theta)\vec{i}+\sin(\theta)\vec{j}$ has magnitude 1 and makes an angle $\theta$ with the origin. The answer is then $\vec{u}=\cos(\frac{2\pi}{3})\vec{i}+\sin(\frac{2\pi}{3})\vec{j}=-\frac{\sqrt{3}}{2}\vec{i}+\frac{1}{2}\vec{j}=(-\frac{\sqrt{3}}{2},\frac{1}{2})$" 
       },
       {
         "concept": "Vectors in Space",
@@ -297,8 +291,7 @@
           }
         ],
         "hint": "What is the question asking?",
-        "explanation": "We first compute its length (magnitude): $|u|=|9i-2j+6k|=\sqrt{9^2+(-2)^2+6^2}=\sqrt{81+4+36}=11$.
-  	  Therefore we can write $u$ as follows: $u=11v$ where $v=(\frac{9}{11}i-\frac{2}{11}j+\frac{6}{11}k)$. $v$ is the direction of $u$."
+        "explanation": "We first compute its length (magnitude): $|u|=|9i-2j+6k|=\sqrt{9^2+(-2)^2+6^2}=\sqrt{81+4+36}=11$. Therefore we can write $u$ as follows: $u=11v$ where $v=(\frac{9}{11}i-\frac{2}{11}j+\frac{6}{11}k)$. $v$ is the direction of $u$."
       }
     ],
 	[
@@ -348,8 +341,7 @@
 	        }
 	      ],
 	      "hint": "What is the canonical form that can be used to described any unit vector?",
-	      "explanation": "By definition, the vector $\vec{u}=\cos(\theta)\vec{i}+\sin(\theta)\vec{j}$ has magnitude 1 and makes an angle $\theta$ with the origin.
-		  The answer is then $\vec{u}=\cos(\frac{2\pi}{3})\vec{i}+\sin(\frac{2\pi}{3})\vec{j}=-\frac{\sqrt{3}}{2}\vec{i}+\frac{1}{2}\vec{j}=(-\frac{\sqrt{3}}{2},\frac{1}{2})$" 
+	      "explanation": "By definition, the vector $\vec{u}=\cos(\theta)\vec{i}+\sin(\theta)\vec{j}$ has magnitude 1 and makes an angle $\theta$ with the origin. The answer is then $\vec{u}=\cos(\frac{2\pi}{3})\vec{i}+\sin(\frac{2\pi}{3})\vec{j}=-\frac{\sqrt{3}}{2}\vec{i}+\frac{1}{2}\vec{j}=(-\frac{\sqrt{3}}{2},\frac{1}{2})$" 
 	    },
 	    {
 	      "concept": "Vectors in Space",
@@ -421,8 +413,7 @@
 	        }
 	      ],
 	      "hint": "What is the question asking?",
-	      "explanation": "We first compute its length (magnitude): $|u|=|9i-2j+6k|=\sqrt{9^2+(-2)^2+6^2}=\sqrt{81+4+36}=11$.
-		  Therefore we can write $u$ as follows: $u=11v$ where $v=(\frac{9}{11}i-\frac{2}{11}j+\frac{6}{11}k)$. $v$ is the direction of $u$."
+	      "explanation": "We first compute its length (magnitude): $|u|=|9i-2j+6k|=\sqrt{9^2+(-2)^2+6^2}=\sqrt{81+4+36}=11$. Therefore we can write $u$ as follows: $u=11v$ where $v=(\frac{9}{11}i-\frac{2}{11}j+\frac{6}{11}k)$. $v$ is the direction of $u$."
 	    },
 	    {
 	      "concept": "Length and Direction",
@@ -446,9 +437,7 @@
 	        }
 	      ],
 	      "hint": "How do you characterize the direction of a vector? Use the constraint on the lenght to find the only vector that answers the question.",
-	      "explanation": "The vector of direction $\vec{i}-\vec{j}$ can be written as $\alpha (\vec{i}-\vec{j})$, where $\alpha$ is a positive constant. The additional constraint on its length yi
-		  elds: $|\alpha (\vec{i}-\vec{j})|=7$ therefore $\alpha \sqrt{2}=7$, which is equivalent to $\alpha=\frac{7}{\sqrt{2}}$. Therefore the vector is 
-		  $\frac{7}{\sqrt{2}}\vec{i}-\frac{7}{\sqrt{2}}\vec{j})=(\frac{7}{\sqrt{2}},-\frac{7}{\sqrt{2}})$"
+	      "explanation": "The vector of direction $\vec{i}-\vec{j}$ can be written as $\alpha (\vec{i}-\vec{j})$, where $\alpha$ is a positive constant. The additional constraint on its length yields: $|\alpha (\vec{i}-\vec{j})|=7$ therefore $\alpha \sqrt{2}=7$, which is equivalent to $\alpha=\frac{7}{\sqrt{2}}$. Therefore the vector is $\frac{7}{\sqrt{2}}\vec{i}-\frac{7}{\sqrt{2}}\vec{j})=(\frac{7}{\sqrt{2}},-\frac{7}{\sqrt{2}})$"
 	    },
 	    {
 	      "concept": "Direction",
@@ -472,8 +461,7 @@
 	        }
 	      ],
 	      "hint": "How do you characterize the direction of a vector?",
-	      "explanation": "$\vec{P_1P_2}=\vec{P_1O}+\vec{OP_2}=-\vec{OP_1}+\vec{OP_2}=-(3,4,5)+(2,4,3)=(-1,0,-2)$. The direction of the vector 
-		  $\vec{P_1P_2}$ is therefore $-\vec{i}-2\vec{k}$, or any vector proportional to this one."
+	      "explanation": "$\vec{P_1P_2}=\vec{P_1O}+\vec{OP_2}=-\vec{OP_1}+\vec{OP_2}=-(3,4,5)+(2,4,3)=(-1,0,-2)$. The direction of the vector $\vec{P_1P_2}$ is therefore $-\vec{i}-2\vec{k}$, or any vector proportional to this one."
 	    }
 	  ],
 	  [
@@ -523,8 +511,7 @@
 	          }
 	        ],
 	        "hint": "What is the canonical form that can be used to described any unit vector?",
-	        "explanation": "By definition, the vector $\vec{u}=\cos(\theta)\vec{i}+\sin(\theta)\vec{j}$ has magnitude 1 and makes an angle $\theta$ with the origin.
-	  	  The answer is then $\vec{u}=\cos(\frac{2\pi}{3})\vec{i}+\sin(\frac{2\pi}{3})\vec{j}=-\frac{\sqrt{3}}{2}\vec{i}+\frac{1}{2}\vec{j}=(-\frac{\sqrt{3}}{2},\frac{1}{2})$" 
+	        "explanation": "By definition, the vector $\vec{u}=\cos(\theta)\vec{i}+\sin(\theta)\vec{j}$ has magnitude 1 and makes an angle $\theta$ with the origin. The answer is then $\vec{u}=\cos(\frac{2\pi}{3})\vec{i}+\sin(\frac{2\pi}{3})\vec{j}=-\frac{\sqrt{3}}{2}\vec{i}+\frac{1}{2}\vec{j}=(-\frac{\sqrt{3}}{2},\frac{1}{2})$" 
 	      },
 	      {
 	        "concept": "Vectors in Space",
@@ -596,8 +583,7 @@
 	          }
 	        ],
 	        "hint": "What is the question asking?",
-	        "explanation": "We first compute its length (magnitude): $|u|=|9i-2j+6k|=\sqrt{9^2+(-2)^2+6^2}=\sqrt{81+4+36}=11$.
-	  	  Therefore we can write $u$ as follows: $u=11v$ where $v=(\frac{9}{11}i-\frac{2}{11}j+\frac{6}{11}k)$. $v$ is the direction of $u$."
+	        "explanation": "We first compute its length (magnitude): $|u|=|9i-2j+6k|=\sqrt{9^2+(-2)^2+6^2}=\sqrt{81+4+36}=11$. Therefore we can write $u$ as follows: $u=11v$ where $v=(\frac{9}{11}i-\frac{2}{11}j+\frac{6}{11}k)$. $v$ is the direction of $u$."
 	      },
 	      {
 	        "concept": "Length and Direction",
@@ -621,9 +607,7 @@
 	          }
 	        ],
 	        "hint": "How do you characterize the direction of a vector? Use the constraint on the lenght to find the only vector that answers the question.",
-	        "explanation": "The vector of direction $\vec{i}-\vec{j}$ can be written as $\alpha (\vec{i}-\vec{j})$, where $\alpha$ is a positive constant. The additional constraint on its length yi
-	  	  elds: $|\alpha (\vec{i}-\vec{j})|=7$ therefore $\alpha \sqrt{2}=7$, which is equivalent to $\alpha=\frac{7}{\sqrt{2}}$. Therefore the vector is 
-	  	  $\frac{7}{\sqrt{2}}\vec{i}-\frac{7}{\sqrt{2}}\vec{j})=(\frac{7}{\sqrt{2}},-\frac{7}{\sqrt{2}})$"
+	        "explanation": "The vector of direction $\vec{i}-\vec{j}$ can be written as $\alpha (\vec{i}-\vec{j})$, where $\alpha$ is a positive constant. The additional constraint on its length yields: $|\alpha (\vec{i}-\vec{j})|=7$ therefore $\alpha \sqrt{2}=7$, which is equivalent to $\alpha=\frac{7}{\sqrt{2}}$. Therefore the vector is $\frac{7}{\sqrt{2}}\vec{i}-\frac{7}{\sqrt{2}}\vec{j})=(\frac{7}{\sqrt{2}},-\frac{7}{\sqrt{2}})$"
 	      },
 	      {
 	        "concept": "Direction",
@@ -647,8 +631,7 @@
 	          }
 	        ],
 	        "hint": "How do you characterize the direction of a vector?",
-	        "explanation": "$\vec{P_1P_2}=\vec{P_1O}+\vec{OP_2}=-\vec{OP_1}+\vec{OP_2}=-(3,4,5)+(2,4,3)=(-1,0,-2)$. The direction of the vector 
-	  	  $\vec{P_1P_2}$ is therefore $-\vec{i}-2\vec{k}$, or any vector proportional to this one."
+	        "explanation": "$\vec{P_1P_2}=\vec{P_1O}+\vec{OP_2}=-\vec{OP_1}+\vec{OP_2}=-(3,4,5)+(2,4,3)=(-1,0,-2)$. The direction of the vector $\vec{P_1P_2}$ is therefore $-\vec{i}-2\vec{k}$, or any vector proportional to this one."
 	      }
 	    ]
 	]

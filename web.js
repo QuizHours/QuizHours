@@ -1,9 +1,5 @@
-//Test code taken from 
-//https://github.com/heroku-examples/node-ws-test/blob/master/server.js
-
 var WebSocketServer = require('ws').Server,
   MongoClient = require('mongodb').MongoClient,
-  //MongoServer = require('mongodb').Server,
   fs = require('fs'),
 	http = require('http'),
 	path = require('path'),
@@ -61,15 +57,3 @@ app.use(express.static(__dirname + '/public'));
 
 var server = http.createServer(app);
 server.listen(port);
-
-//WebSocket stuff...not needed in 1.0
-/*var wss = new WebSocketServer({server: server});
-wss.on('connection', function(ws){
-		var id = setInterval(function(){
-				ws.send(JSON.stringify(new Date()), function(){});
-		}, 100);
-
-		ws.on('close', function(){
-				clearInterval(id);
-		});
-});*/

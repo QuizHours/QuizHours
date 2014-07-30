@@ -9,16 +9,6 @@
 	<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<!--<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
 	<script type="text/javascript" src="app.js"></script>
-	<script>
-		//WebSocket stuff - not needed in 1.0
-		/*var host = location.origin.replace(/^http/, 'ws');
-		var ws = new WebSocket(host);
-		ws.onmessage = function(event){
-			//var li = document.createElement('li');
-			//li.innerHTML = JSON.parse(event.data);
-			document.querySelector('#pings').innerHTML = JSON.parse(event.data);
-		};*/
-	</script>
 </head>
 <body ng-controller="QuizCtrl">
 
@@ -31,7 +21,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" ng-click="setQuiz(0);setQuestion(0)" >{{course.name}}</a>
+        <a class="navbar-brand" ng-click="setQuiz(0);" >{{course.name}}</a>
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
@@ -48,7 +38,7 @@
       <div class="col-sm-3 col-md-2 sidebar">
         <ul class="nav nav-sidebar">
           <li ng-class="{'active':$index==questionSelected}" ng-repeat="question in course.quizzes[quizSelected]">
-            <a href="#" ng-click="setQuestion($index)">{{$index + 1}}) {{question.concept}}</a>
+            <a href="#" ng-click="setQuestion($index);">{{$index + 1}}) {{question.concept}}</a>
           </li>
         </ul>
       </div>

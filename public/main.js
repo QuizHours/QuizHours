@@ -1,5 +1,7 @@
 //Global variables for AJAX request and response
-var ajax_url = 'http://localhost:5000/api/courses/vadim1337';
+//WE REALLY NEED TO FIND A HEROKU-SPECIFIC WAY TO DEAL WITH THIS
+//var ajax_url = 'http://localhost:5000/api/courses/vadim1337';
+var ajax_url = 'http://quizhours.herokuapp.com/api/courses/vadim1337';
 var data;
 
 $(document).ready(function() {

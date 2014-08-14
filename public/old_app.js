@@ -1,9 +1,31 @@
 (function(){
-  var quizHoursApp = angular.module('quizHoursApp',[]);
+  var quizHoursApp = angular.module('quizHoursApp',['quizHoursApp.directives']);
 
   var MATHJAX_SOURCE = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-  var quizhoursUri = 'http://quizhours.herokuapp.com/api/courses/vadim1337';
-  //var quizhoursUri = 'http://localhost:5000/api/courses/vadim1337';
+  //var quizhoursUri = 'http://quizhours.herokuapp.com/api/courses/vadim1337';
+  var quizhoursUri = 'http://localhost:5000/api/courses/vadim1337';
+  
+  angular.module('quizHoursApp.directives', [])
+    .directive('reloadMathjax',[function(){
+      return {
+        link: function(scope, elem, attrs, ctrl){
+          var load_mathjax = function() {
+             /*var tag = document.createElement('script');
+             alert("REMOVING MATHJAX");
+             $(".matjax_script").remove();
+             tag.className = "matjax_script";
+               tag.src = MATHJAX_SOURCE;
+               var firstScriptTag = document.getElementsByTagName('script')[0];
+               alert("ADDING MATHJAX");
+               firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);*/
+             //$('#question-content > p').html('');
+               MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+          }
+          //attrs.$observe("reloadMathjax", function(){window.setTimeout(load_mathjax, 1000);});
+          attrs.$observe("reloadMathjax", load_mathjax);
+        }
+      };
+    }]);
   
   quizHoursApp.controller('QuizCtrl', ['$scope', '$http', function($scope, $http){
       //$http.get('http://quizhours.herokuapp.com/api/courses/vadim1337').success(function(data){
@@ -14,14 +36,7 @@
           } else {
             $scope.course = data;
           }
-          //$scope.mathjax = mathjax;
           $scope.course = $scope.course[0];
-          /*$scope.quizSelected = 0;
-          $scope.questionSelected = 0;
-          $scope.answerResponse = '';
-          $scope.currentAnswer = {};
-          $scope.currentQuiz = $scope.course.quizzes[$scope.quizSelected];
-          $scope.currentQuestion = $scope.currentQuiz[$scope.questionSelected];*/
           $scope.setCurrentQuestion(0,0);
       });
       $scope.setQuiz = function(quizIndex){
@@ -44,6 +59,11 @@
             cleanedAnswers.push(cleanedAnswer);
         });
         $scope.currentQuestion.answers = cleanedAnswers;
+        $scope.mathjax_outputs = null;
+        MathJax.Hub.queue.Push(function(){
+            $scope.mathjax_outputs = MathJax.Hub.getAllJax("MathOutput");
+            //
+        });
       };
       $scope.selectAnswer = function(answerIndex){
         $scope.currentAnswer = {};  //Clear previous answer
@@ -56,7 +76,7 @@
         }
         $scope.answerResponse = $scope.clean_latex($scope.answerResponse);
       };
-      $scope.load_mathjax = function() {
+      /*$scope.load_mathjax = function() {
          var tag = document.createElement('script');
          alert("REMOVING MATHJAX");
          $(".matjax_script").remove();
@@ -65,7 +85,7 @@
            var firstScriptTag = document.getElementsByTagName('script')[0];
            alert("ADDING MATHJAX");
            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-      }
+      }*/
       //function to parse common LaTeX dollar signs into mathjax-friendly parens
       $scope.clean_latex = function(latex){
         var inExpression = false;

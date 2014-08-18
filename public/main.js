@@ -1,7 +1,7 @@
 //Global variables for AJAX request and response
 //TODO: pass a flag from quizhours.herokuapp.com that labels as prod or dev
-//var ajax_url = 'http://localhost:5000';
-var ajax_url = 'http://quizhours.herokuapp.com';
+var ajax_url = 'http://localhost:5000';
+//var ajax_url = 'http://quizhours.herokuapp.com';
 ajax_url += '/api/courses/vadim1337';
 var data;
 
@@ -29,14 +29,18 @@ $(document).ready(function() {
 */
 function publish_all_quizzes() {
 	$.each(data.quizzes, function(i, quiz) {
-	    $(".quiz_list").prepend("<li class='quiz_item' quiz_id = '"+i+"'><a href='#quiz"+(i+1)+"'>Quiz "+(i+1)+"</a></li>");
+	    $(".quiz_list").append("<li class='quiz_item' quiz_id = '"+i+"'><a href='#quiz"+(i+1)+"'>Quiz "+(i+1)+"</a></li>");
 	});
 
 	//Displays data for the first quiz by default
+	$(".quiz_item").first().addClass('active');
 	publish_question_list(data.quizzes[0]);
 
 	//On clicking a quiz, display question list of that quiz
 	$(".quiz_item").click(function() {
+	  //$(".quiz_item .active").removeClass("active");
+	  $(".quiz_item").removeClass().addClass("quiz_item");
+	  $(this).addClass("active");
 		var quiz_id = $(this).attr("quiz_id");
 		publish_question_list(data.quizzes[quiz_id]);
 	});
@@ -59,7 +63,7 @@ function publish_question_list(quiz_data) {
 	//On clicking a question, display it
 	$(".q_list_q").click(function() {
 		var question_id = $(this).attr("question_id");
-		$(".active").removeClass("active");
+		$(".q_list_q").removeClass().addClass("q_list_q");
 		$(this).addClass("active");
 		publish_question(quiz_data[question_id]);
 	});
@@ -68,7 +72,7 @@ function publish_question_list(quiz_data) {
 function publish_question(question_data) {
 	//Clear current content
 	$(".question_display").empty();
-
+	
 	$(".question_display").append("<h1>"+question_data.concept+"</h1>");
 	
 	//Publish the question

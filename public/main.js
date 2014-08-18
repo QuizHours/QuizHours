@@ -1,7 +1,8 @@
 //Global variables for AJAX request and response
-//WE REALLY NEED TO FIND A HEROKU-SPECIFIC WAY TO DEAL WITH THIS
-//var ajax_url = 'http://localhost:5000/api/courses/vadim1337';
-var ajax_url = 'http://quizhours.herokuapp.com/api/courses/vadim1337';
+//TODO: pass a flag from quizhours.herokuapp.com that labels as prod or dev
+//var ajax_url = 'http://localhost:5000';
+var ajax_url = 'http://quizhours.herokuapp.com';
+ajax_url += '/api/courses/vadim1337';
 var data;
 
 $(document).ready(function() {
@@ -28,7 +29,7 @@ $(document).ready(function() {
 */
 function publish_all_quizzes() {
 	$.each(data.quizzes, function(i, quiz) {
-	    $(".quiz_list").append("<li class='quiz_item' quiz_id = '"+i+"'><a href='#quiz"+(i+1)+"'>Quiz "+(i+1)+"</a></li>");
+	    $(".quiz_list").prepend("<li class='quiz_item' quiz_id = '"+i+"'><a href='#quiz"+(i+1)+"'>Quiz "+(i+1)+"</a></li>");
 	});
 
 	//Displays data for the first quiz by default

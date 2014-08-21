@@ -1,7 +1,7 @@
 //Global variables for AJAX request and response
 //TODO: pass a flag from quizhours.herokuapp.com that labels as prod or dev
-var ajax_url = 'http://localhost:5000';
-//var ajax_url = 'http://quizhours.herokuapp.com';
+//var ajax_url = 'http://localhost:5000';
+var ajax_url = 'http://quizhours.herokuapp.com';
 ajax_url += '/api/courses/vadim1337';
 var data;
 

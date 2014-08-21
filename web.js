@@ -8,7 +8,6 @@ var WebSocketServer = require('ws').Server,
 	app = express(),
 	port = process.env.PORT || 5000,
 	mongoUri = process.env.MONGOHQ_URL || 'mongodb://localhost:27017',
-	//mongoName = 'test_insert',
 	mongoName = 'courses',
   router = express.Router();
   
@@ -16,8 +15,6 @@ MongoClient.connect(mongoUri, function(err, db){
   if(err) throw err;
   db.collection(mongoName).drop(); //clear collection for time being while testing
   var collection = db.collection(mongoName);
-  //var filename = 'cme100_summer2014.json';
-  //var filename = 'course-template2.json';
   var filename = 'course-template1.json';
   fs.readFile(path.join(process.cwd(), '/data/courses/'+filename), 'utf8', function(err, data){
     var initialCourse;
@@ -26,11 +23,7 @@ MongoClient.connect(mongoUri, function(err, db){
       return;
     } else {
       data = data.split("\\").join("\\\\");
-      //data = data.split("$").join("$$");
-      //data = JSON.stringify(data).replaceAll("\\", "*");
       initialCourse = JSON.parse(data);
-      //initialCourse = data;
-      //console.log(data);
     }
     collection.insert(initialCourse, function(err, docs){
       collection.find().toArray(function(err, results){
@@ -82,8 +75,6 @@ router.route('/courses/:coursecode')
   });
 
 app.use(bodyParser.json());
-
-//app.use(bodyParser.urlencoded());
   
 app.use('/api', router);
 

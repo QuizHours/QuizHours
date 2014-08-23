@@ -37,9 +37,8 @@ function publish_all_quizzes() {
 	*Publish the questions in reverse order, so that when they
 	*are floated left, they are in the correct order.
 	*/
-	for(var i = data.quizzes.length - 1; i >= 0; i--) {
+	for(var i = data.quizzes.length - 1; i >= 0; i--)
 		$(".quiz_list").append("<div class = 'quiz_item' quiz_id = '"+i+"'> Quiz "+(i+1)+"</div>");
-	}
 
 	//Displays data for the first quiz by default
 	$(".quiz_item").last().addClass("active");
@@ -47,8 +46,10 @@ function publish_all_quizzes() {
 
 	//On clicking a quiz, display question list of that quiz
 	$(".quiz_item").click(function() {
+		//Update CSS styling
 		$(".quiz_item").removeClass("active");
 		$(this).addClass("active");
+
 		var quiz_id = $(this).attr("quiz_id");
 		publish_question_list(data.quizzes[quiz_id]);
 	});
@@ -70,8 +71,10 @@ function publish_question_list(quiz_data) {
 
 	//On clicking a question, display it
 	$(".question_list_item").click(function() {
+		//Update CSS styling
 		$(".question_list_item").removeClass("question_active");
 		$(this).addClass("question_active")
+		
 		var question_id = $(this).attr("question_id");
 		publish_question(quiz_data[question_id]);
 	});

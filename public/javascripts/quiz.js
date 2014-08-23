@@ -25,6 +25,8 @@ function load_course_data() {
 		//Store the response globally
 		data = response[0];
 		publish_all_quizzes();	
+	}).fail(function(){
+		$(".question_display").append("<div class = 'displayed_concept'>Something went wrong and no quizzes were loaded. Please report this issue to dev@quizhours.com</div>");
 	});
 }
 

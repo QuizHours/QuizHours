@@ -34,10 +34,10 @@ body {
 
 	height: 42px;
 	width: 100%;
-	/*Padding left is the same 
-	  as the width of the logo*/
+	/*Padding left is larger 
+	  than the width of the logo*/
 	box-sizing: border-box;
-	padding: 14px 14px 0 140px;
+	padding: 14px 14px 0 170px;
 
 	white-space: nowrap;
 	overflow: scroll;
@@ -62,14 +62,15 @@ body {
 	left: 0;
 	bottom: 0;
 
-	width: 185px;
+	width: 190px;
 
 	background-color: #CFE0F4;
+	overflow: scroll;
 }
 
 .question_list_item {
 	box-sizing: border-box;
-	padding: 10px 10px;
+	padding: 10px 15px;
 
 	color: #14314F;
 }
@@ -88,7 +89,7 @@ body {
 .question_display {
 	position: absolute;
 	top: 52px;   /*Height of header*/
-	left: 185px; /*Width of sidebar*/
+	left: 190px; /*Width of sidebar*/
 	right: 0;
 	bottom: 0;
 
@@ -101,7 +102,7 @@ body {
 	font-weight: 500;
 	line-height: 40px;
 
-	padding-top: 20px;
+	padding: 20px 20px 0 20px;
 }
 
 .displayed_question {

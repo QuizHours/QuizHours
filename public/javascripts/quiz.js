@@ -60,14 +60,17 @@ function publish_question_list(quiz_data) {
 	$(".question_list").empty();
 
 	$.each(quiz_data, function(i, question) {
-		$(".question_list").append("<div class = 'q_list_q' question_id = '"+i+"'>"+question.concept+"</div>");
+		$(".question_list").append("<div class = 'question_list_item' question_id = '"+i+"'>"+question.concept+"</div>");
 	});
 
 	//Show first question by default
+	$(".question_list_item").first().addClass("question_active");
 	publish_question(quiz_data[0]);
 
 	//On clicking a question, display it
-	$(".q_list_q").click(function() {
+	$(".question_list_item").click(function() {
+		$(".question_list_item").removeClass("question_active");
+		$(this).addClass("question_active")
 		var question_id = $(this).attr("question_id");
 		publish_question(quiz_data[question_id]);
 	});
@@ -78,11 +81,12 @@ function publish_question(question_data) {
 	$(".question_display").empty();
 
 	//Publish the question
-	$(".question_display").append("<div>"+question_data.question+"</div>");
+	$(".question_display").append("<div class = 'displayed_concept'>"+question_data.concept+"</div>");
+	$(".question_display").append("<div class = 'displayed_question'>"+question_data.question+"</div>");
 
 	//Publish each of the answers
 	$.each(question_data.answers, function(i, answer) {
-		$(".question_display").append("<div class = 'answers' answer_id = '"+ i +"'>"+answer.content+"</div>");
+		$(".question_display").append("<div class = 'answers unattempted' answer_id = '"+ i +"'>"+answer.content+"</div>");
 	});
 
 	//Space for the hint/explanation
@@ -90,6 +94,9 @@ function publish_question(question_data) {
 	refresh_mathjax();
 
 	$(".answers").click(function() {
+		//Remove CSS styling on any old attempts
+		$(".answers").removeClass().addClass("answers unattempted");
+
 		var answer_id = $(this).attr("answer_id");
 
 		//Clear any current hints
@@ -97,10 +104,16 @@ function publish_question(question_data) {
 
 		//If answer is right, give explanation
 		//Else, give hint		
-		if(question_data.answers[answer_id].isCorrect)
+		if(question_data.answers[answer_id].isCorrect) {
+			$(this).removeClass("unattempted").addClass("correct");
 			$(".hints").append("<div>"+question_data.explanation+"</div>");
-		else
+		}
+		else {
+			$(this).removeClass("unattempted").addClass("wrong");
 			$(".hints").append("<div>"+question_data.hint+"</div>");
+		}
+
+		refresh_mathjax();
 	});
 }
 

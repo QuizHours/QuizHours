@@ -5,9 +5,10 @@ var data;
 
 $(document).ready(function() {
 	//MathJax Configuration for inline display
+	//and to hide all messages
 	MathJax.Hub.Config({tex2jax: {
-		inlineMath: [ ['$','$'], ['\\(','\\)'] ]
- 	}});
+		inlineMath: [ ['$','$'], ['\\(','\\)'] ]},
+		messageStyle: "none"});
 
 	load_course_data();
 });

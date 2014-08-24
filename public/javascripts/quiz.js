@@ -1,11 +1,10 @@
-//Global variables for AJAX request and response
-var ajax_url = 'http://localhost:5000/api/courses/vadim1337';
-//var ajax_url = 'http://quizhours.herokuapp.com//api/courses/vadim1337';
+/*Global variables for AJAX request and response*/
+var ajax_url = ${$URI_HOOK$}$; /* Environment specific: prod vs dev*/
 var data;
 
 $(document).ready(function() {
-	//MathJax Configuration for inline display
-	//and to hide all messages
+	/*MathJax Configuration for inline display
+	and to hide all messages */
 	MathJax.Hub.Config({tex2jax: {
 		inlineMath: [ ['$','$'], ['\\(','\\)'] ]},
 		messageStyle: "none"});
@@ -22,7 +21,7 @@ function load_course_data() {
 	$.ajax({
 		url: ajax_url
 	}).done(function(response){
-		//Store the response globally
+		/*Store the response globally*/
 		data = response[0];
 		publish_all_quizzes();	
 	}).fail(function(){
@@ -35,22 +34,22 @@ function load_course_data() {
 *Shows details of first quiz by default
 */
 function publish_all_quizzes() {
-	//Publish all questions
+	/*Publish all questions*/
 	var num_quizzes = data.quizzes.length
 	for(var i = 0; i < num_quizzes; i++)
 		$(".quiz_list").append("<div class = 'quiz_item' quiz_id = '"+i+"'> Quiz "+(i+1)+"</div>");
 
-	//If many quizzes present, toggle scrolling
+	/*If many quizzes present, toggle scrolling*/
 	if($(".quiz_list").height() > $(".quiz_list_wrapper").height())
 		$(".quiz_list").css({"float": "none", "white-space": "nowrap", "overflow-x": "scroll"});
 
-	//Displays data for the first quiz by default
+	/*Displays data for the first quiz by default*/
 	$(".quiz_item").first().addClass("active");
 	publish_question_list(data.quizzes[0]);
 
-	//On clicking a quiz, display question list of that quiz
+	/*On clicking a quiz, display question list of that quiz*/
 	$(".quiz_item").click(function() {
-		//Update CSS styling
+		/*Update CSS styling*/
 		$(".quiz_item").removeClass("active");
 		$(this).addClass("active");
 
@@ -69,13 +68,13 @@ function publish_question_list(quiz_data) {
 		$(".question_list").append("<div class = 'question_list_item' question_id = '"+i+"'>"+question.concept+"</div>");
 	});
 
-	//Show first question by default
+	/*Show first question by default*/
 	$(".question_list_item").first().addClass("question_active");
 	publish_question(quiz_data[0]);
 
-	//On clicking a question, display it
+	/*On clicking a question, display it*/
 	$(".question_list_item").click(function() {
-		//Update CSS styling
+		/*Update CSS styling*/
 		$(".question_list_item").removeClass("question_active");
 		$(this).addClass("question_active")
 		
@@ -85,33 +84,33 @@ function publish_question_list(quiz_data) {
 }
 
 function publish_question(question_data) {
-	//Clear current content
+	/*Clear current content*/
 	$(".question_display").empty();
 
-	//Publish the question
+	/*Publish the question*/
 	$(".question_display").append("<div class = 'displayed_concept'>"+question_data.concept+"</div>");
 	$(".question_display").append("<div class = 'displayed_question'>"+question_data.question+"</div>");
 
-	//Publish each of the answers
+	/*Publish each of the answers*/
 	$.each(question_data.answers, function(i, answer) {
 		$(".question_display").append("<div class = 'answers unattempted' answer_id = '"+ i +"'>"+answer.content+"</div>");
 	});
 
-	//Space for the hint/explanation
+	/*Space for the hint/explanation*/
 	$(".question_display").append("<div class = 'hints'></div>")
 	refresh_mathjax();
 
 	$(".answers").click(function() {
-		//Remove CSS styling on any old attempts
+		/*Remove CSS styling on any old attempts*/
 		$(".answers").removeClass().addClass("answers unattempted");
 
 		var answer_id = $(this).attr("answer_id");
 
-		//Clear any current hints
+		/*Clear any current hints*/
 		$(".hints").empty()
 
-		//If answer is right, give explanation
-		//Else, give hint		
+		/*If answer is right, give explanation
+		  Else, give hint */
 		if(question_data.answers[answer_id].isCorrect) {
 			$(this).removeClass("unattempted").addClass("correct");
 			$(".hints").append("<div>"+question_data.explanation+"</div>");

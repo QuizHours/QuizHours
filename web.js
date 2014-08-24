@@ -78,6 +78,20 @@ app.use(bodyParser.json());
   
 app.use('/api', router);
 
+// Hack to control api endpoint between development and production
+app.get('/js/quiz.js', function(request, response){
+    var course_uri = "'" + (port == 5000 ? "http://localhost:5000" : "http://quizhours.herokuapp.com");
+    course_uri += "/api/courses/vadim1337" + "'";
+    fs.readFile('public/javascripts/quiz.js', 'utf8', function(err, data){
+        if(err) {
+          response.send(err);
+        } else {
+          data = data.replace("${$URI_HOOK$}$", course_uri);
+          response.send(data);
+        }
+    });
+});
+
 app.use(express.static(__dirname + '/public'));
 
 var server = http.createServer(app);

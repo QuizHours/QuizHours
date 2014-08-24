@@ -41,7 +41,7 @@ function publish_all_quizzes() {
 
 	/*If many quizzes present, toggle scrolling*/
 	if($(".quiz_list").height() > $(".quiz_list_wrapper").height())
-		$(".quiz_list").css({"float": "none", "white-space": "nowrap", "overflow-x": "scroll"});
+		$(".quiz_list").css({"float": "none", "white-space": "nowrap", "-ms-overflow-style" : "-ms-autohiding-scrollbar;", "overflow-x": "auto"});
 
 	/*Displays data for the first quiz by default*/
 	$(".quiz_item").first().addClass("active");

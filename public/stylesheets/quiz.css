@@ -67,6 +67,7 @@ body {
 
 	background-color: #CFE0F4;
 	overflow: auto;
+	-ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
 .question_list_item {

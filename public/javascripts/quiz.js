@@ -35,7 +35,7 @@ function load_course_data() {
 */
 function publish_all_quizzes() {
 	/*Publish all questions*/
-	var num_quizzes = data.quizzes.length
+	var num_quizzes = data.quizzes.length;
 	for(var i = 0; i < num_quizzes; i++)
 		$(".quiz_list").append("<div class = 'quiz_item' quiz_id = '"+i+"'> Quiz "+(i+1)+"</div>");
 

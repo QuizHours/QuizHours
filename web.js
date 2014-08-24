@@ -78,13 +78,27 @@ app.use(bodyParser.json());
   
 app.use('/api', router);
 
+// OH GOD
+// THE HACK
+// IT HURTS (replace this as soon as possible)
+app.get('/quiz', function(request, response){
+    var classcode = request.query.classcode;
+    fs.readFile('public/quiz.html', 'utf8', function(err, data){
+        if(err){
+        } else {
+          data = data.replace("${$CLASSCODE_HOOK$}$", classcode);
+          response.send(data);
+        }
+    });
+});
+
 // Hack to control api endpoint between development and production
+// TODO: HELLA SLOW FIND A BETTER SOLUTION
 app.get('/js/quiz.js', function(request, response){
     var course_uri = "'" + (port == 5000 ? "http://localhost:5000" : "http://quizhours.herokuapp.com");
-    course_uri += "/api/courses/vadim1337" + "'";
+    course_uri += "/api/courses/" + request.query.classcode + "'";
     fs.readFile('public/javascripts/quiz.js', 'utf8', function(err, data){
         if(err) {
-          response.send(err);
         } else {
           data = data.replace("${$URI_HOOK$}$", course_uri);
           response.send(data);

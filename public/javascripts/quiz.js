@@ -35,15 +35,17 @@ function load_course_data() {
 *Shows details of first quiz by default
 */
 function publish_all_quizzes() {
-	/*
-	*Publish the questions in reverse order, so that when they
-	*are floated left, they are in the correct order.
-	*/
-	for(var i = data.quizzes.length - 1; i >= 0; i--)
+	//Publish all questions
+	var num_quizzes = data.quizzes.length
+	for(var i = 0; i < num_quizzes; i++)
 		$(".quiz_list").append("<div class = 'quiz_item' quiz_id = '"+i+"'> Quiz "+(i+1)+"</div>");
 
+	//If many quizzes present, toggle scrolling
+	if($(".quiz_list").height() > $(".quiz_list_wrapper").height())
+		$(".quiz_list").css({"float": "none", "white-space": "nowrap", "overflow-x": "scroll"});
+
 	//Displays data for the first quiz by default
-	$(".quiz_item").last().addClass("active");
+	$(".quiz_item").first().addClass("active");
 	publish_question_list(data.quizzes[0]);
 
 	//On clicking a quiz, display question list of that quiz

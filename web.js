@@ -96,7 +96,7 @@ app.get('/quiz', function(request, response){
 // TODO: HELLA SLOW FIND A BETTER SOLUTION
 app.get('/js/quiz.js', function(request, response){
     var course_uri = "'" + (port == 5000 ? "http://localhost:5000" : "http://quizhours.herokuapp.com");
-    course_uri += "/api/courses/" + request.param.classcode + "'";
+    course_uri += "/api/courses/" + request.query.classcode + "'";
     fs.readFile('public/javascripts/quiz.js', 'utf8', function(err, data){
         if(err) {
         } else {

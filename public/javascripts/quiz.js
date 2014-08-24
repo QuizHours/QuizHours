@@ -90,10 +90,11 @@ function publish_question(question_data) {
 	/*Publish the question*/
 	$(".question_display").append("<div class = 'displayed_concept'>"+question_data.concept+"</div>");
 	$(".question_display").append("<div class = 'displayed_question'>"+question_data.question+"</div>");
+	$(".question_display").append("<div class = 'answers_container'></div>");
 
 	/*Publish each of the answers*/
 	$.each(question_data.answers, function(i, answer) {
-		$(".question_display").append("<div class = 'answers unattempted' answer_id = '"+ i +"'>"+answer.content+"</div>");
+		$(".answers_container").append("<div class = 'answers unattempted' answer_id = '"+ i +"'>"+answer.content+"</div>");
 	});
 
 	/*Space for the hint/explanation*/

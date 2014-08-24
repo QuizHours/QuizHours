@@ -114,19 +114,37 @@ body {
 	line-height: 34px;
 }
 
+.answers_container {
+	margin: auto;
+	max-width: 575px;
+}
+
 .answers {
 	border: 1px solid #CCC;
 	border-radius: 5px;
 	padding: 7px;
-	margin: 5px auto;
+	margin: 5px 10px;
 
 	max-width: 250px;
+	display: inline-block;
+	width: 100%;
 
 	text-align: center;
 	font-size: 14px;
 	line-height: 20px;
 }
 
+/*
+ * Breakpoint to ensure that answers are initially 2x2
+ * but then stack when the screen is small.
+ */
+@media(max-width: 780px) {
+	.answers_container{}
+	.answers {
+		display: block;
+		margin: 5px auto;
+	}
+}
 .unattempted:hover {
 	border-color: #ADADAD;
 	background-color: #EBEBEB;

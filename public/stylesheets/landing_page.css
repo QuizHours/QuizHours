@@ -4,9 +4,13 @@
 
 /* Links */
 a,
-a:focus,
-a:hover {
+a:focus {
   color: #fff;
+}
+
+a:hover,
+a:active {
+  color: #ffa500;
 }
 
 /* Custom default button */
@@ -19,6 +23,31 @@ a:hover {
   border: 1px solid #fff;
 }
 
+label,
+input {
+  background-color: #14314f;
+  border: 0;
+  font-weight: lighter;
+  text-align: center;
+}
+
+input[type=text],
+input[type=text]:focus,
+input[type=text]:hover,
+input[type=text]:active {
+  color: #fff;
+  outline: none;
+  border: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  border: none;
+  border-bottom: 1px solid #fff;
+}
+
+input[type=submit] {
+  color: #ffa500;
+}
 
 /*
  * Base structure

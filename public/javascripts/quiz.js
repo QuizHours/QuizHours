@@ -34,10 +34,12 @@ function load_course_data() {
 *Shows details of first quiz by default
 */
 function publish_all_quizzes() {
+	$(".quiz_list").append("<div class = 'quiz_title'>Quizzes</div>")
+
 	/*Publish all questions*/
 	var num_quizzes = data.quizzes.length;
 	for(var i = 0; i < num_quizzes; i++)
-		$(".quiz_list").append("<div class = 'quiz_item' quiz_id = '"+i+"'> Quiz "+(i+1)+"</div>");
+		$(".quiz_list").append("<div class = 'quiz_item' quiz_id = '"+i+"'> "+(i+1)+"</div>");
 
 	/*If many quizzes present, toggle scrolling*/
 	if($(".quiz_list").height() > $(".quiz_list_wrapper").height())
@@ -108,20 +110,30 @@ function publish_question(question_data) {
 		var answer_id = $(this).attr("answer_id");
 
 		/*Clear any current hints*/
-		$(".hints").empty()
+		$(".hints").empty();
 
-		/*If answer is right, give explanation
-		  Else, give hint */
-		if(question_data.answers[answer_id].isCorrect) {
-			$(this).removeClass("unattempted").addClass("correct");
-			$(".hints").append("<div>"+question_data.explanation+"</div>");
-		}
-		else {
-			$(this).removeClass("unattempted").addClass("wrong");
-			$(".hints").append("<div>"+question_data.hint+"</div>");
-		}
+		/*
+		 * Add the processing styling to the selected div.
+		 * Continue processing answer after a timeout of
+		 * 1000 milliseconds.
+		 */
+		$(this).removeClass("unattempted").addClass("processing");
+		setTimeout(function(){
+			/*If answer is right, give explanation
+			  Else, give hint */
+			if(question_data.answers[answer_id].isCorrect) {
+				$("div[answer_id = "+answer_id+"]").removeClass("processing").addClass("correct");
+				$(".hints").append("<div> Explanation: "+question_data.explanation+"</div>");
+			}
+			else {
+				$("div[answer_id = "+answer_id+"]").removeClass("processing").addClass("wrong");
+				$(".hints").append("<div> Hint: "+question_data.hint+"</div>");
+			}
 
-		refresh_mathjax();
+			refresh_mathjax();
+		}, 1000);
+
+		
 	});
 }
 

@@ -122,29 +122,26 @@ app.get('/js/quiz.js', function(request, response){
     });
 });
 
-// Hack, replace with templating
 app.get('/quizbuilder', function(request, response){
     var classcode = request.query.classcode;
     // TODO: add code to check for classcode, return error if not present/valid
     fs.readFile('quizbuilder/quizbuilder.html', 'utf8', function(err, file){
         if(err){
         } else {
-          file = file.replace("${$CLASSCODE_HOOK$}$", classcode);
-          response.send(file);
+          var context = {"classcode": classcode};
+          response.send(compileHandlebars(file, context));
         }
     });
 });
 
-// Hack, replace with templating
 app.get('/quizbuilder/quizbuilder.js', function(request, response){
-    var course_uri = "'" + (port == 5000 ? "http://localhost:5000" : "http://quizhours.herokuapp.com");
-    course_uri += "/api/courses/" + request.query.classcode + "'";
+    var course_uri = (port == 5000 ? "http://localhost:5000" : "http://quizhours.herokuapp.com");
+    course_uri += "/api/courses/" + request.query.classcode;
     fs.readFile('quizbuilder/quizbuilder.js', 'utf8', function(err, file){
         if(err) {
-          //res.send(err);
         } else {
-          file = file.replace("${$URI_HOOK$}$", course_uri);
-          response.send(file);
+          var context = {"uriHook": course_uri};
+          response.send(compileHandlebars(file, context));
         }
     });
 });

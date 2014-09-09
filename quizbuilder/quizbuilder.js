@@ -3,7 +3,7 @@
 console.log("Hello");
 })();
     /* Global veriables for AJAX request and response */
-    var ajax_url = ${$URI_HOOK$}$; /* Environment specific: prod vs dev */
+    var ajax_url = '{{uriHook}}'; /* Environment specific: prod vs dev */
     var data;
     console.log("in function scope");
     $(document).ready(function(){

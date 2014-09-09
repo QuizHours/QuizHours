@@ -5,10 +5,12 @@
 </head>
 <body>
   <h1>Quiz Builder</h1>
-  <div class="quizzes-container"></div>
+  <button id="add-quiz-btn" class="btn btn-default btn-success">+</button>
+  <ul id="quiz-list"></ul>
+  <div id="quizzes-container"></div>
   
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type = 'text/javascript'></script>
-  <script type="text/javascripts" src="/quizbuilder/quizbuilder.js?classcode=${$CLASSCODE_HOOK$}$"></script>
+  <script type="text/javascript" src="/quizbuilder/quizbuilder.js?classcode={{classcode}}"></script>
 </body>
 </html>

@@ -18,7 +18,6 @@ MongoClient.connect(mongoUri, function(err, db){
   var collection = db.collection(mongoName);
   var filename = 'course-template1.json';
   fs.readFile(path.join(process.cwd(), '/data/courses/'+filename), 'utf8', function(err, data){
-    
     var initialCourse;
     if(err){
       console.log('error reading from file');
@@ -27,16 +26,13 @@ MongoClient.connect(mongoUri, function(err, db){
       data = data.split("\\").join("\\\\");
       initialCourse = JSON.parse(data);
     }
-    
     collection.insert(initialCourse, function(err, docs){
       collection.find().toArray(function(err, results){
           if(err) throw err;
           db.close();
       });
     });
-    
   });
-  
 });
 
 function compileHandlebars(inputString, context){
@@ -122,6 +118,7 @@ app.get('/js/quiz.js', function(request, response){
         } else {
           var context = {"uriHook": course_uri};
           response.send(compileHandlebars(file, context));
+        }
     });
 });
 

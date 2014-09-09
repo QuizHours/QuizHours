@@ -4,6 +4,7 @@ var WebSocketServer = require('ws').Server,
   fs = require('fs'),
 	http = require('http'),
 	path = require('path'),
+	Handlebars = require('handlebars'),
 	express = require('express'),
 	app = express(),
 	port = process.env.PORT || 5000,
@@ -17,6 +18,7 @@ MongoClient.connect(mongoUri, function(err, db){
   var collection = db.collection(mongoName);
   var filename = 'course-template1.json';
   fs.readFile(path.join(process.cwd(), '/data/courses/'+filename), 'utf8', function(err, data){
+    
     var initialCourse;
     if(err){
       console.log('error reading from file');
@@ -25,15 +27,26 @@ MongoClient.connect(mongoUri, function(err, db){
       data = data.split("\\").join("\\\\");
       initialCourse = JSON.parse(data);
     }
+    
     collection.insert(initialCourse, function(err, docs){
       collection.find().toArray(function(err, results){
           if(err) throw err;
           db.close();
       });
     });
+    
   });
+  
 });
 
+function compileHandlebars(inputString, context){
+  var template = Handlebars.compile(inputString);
+  return template(context);
+}
+
+// Every extension handled by router involves QuizHours API
+
+// Course data (GET/CREATE/UPDATE/DELETE course)
 router.route('/courses/:coursecode')
 
   .get(function(req, res){
@@ -49,13 +62,21 @@ router.route('/courses/:coursecode')
               res.send(findErr);
               throw findErr;
             }
-            res.json(results);
+            /*if(typeof(results) == 'string')
+              results = JSON.parse(results);
+            var sanitizedResults = {};
+            sanitizedResults.classcode = results.classcode;
+            sanitizedResults.name = results.name;
+            sanitizedResults.quizzes = results.quizzes;*/
+            // TODO: PATCH THIS SECURITY HOLE
+            var sanitizedResults = results;
+            res.json(sanitizedResults);
             db.close();
         });
     });
   })
   
-  .post(function(req, res){
+  /*.post(function(req, res){
       var courseData = req.body.course;
       MongoClient.connect(mongoUri, function(conErr, db){
           if(conErr) {
@@ -72,36 +93,61 @@ router.route('/courses/:coursecode')
               db.close();
           });
       });
-  });
+  });*/
 
 app.use(bodyParser.json());
   
 app.use('/api', router);
 
-// OH GOD
-// THE HACK
-// IT HURTS (replace this as soon as possible)
+// Every extension handled by app.VERB is functionality for the webapp
+
 app.get('/quiz', function(request, response){
     var classcode = request.query.classcode;
-    fs.readFile('public/quiz.html', 'utf8', function(err, data){
+    // TODO: add code to check for classcode, return error if not present/valid
+    fs.readFile('public/quiz.html', 'utf8', function(err, file){
         if(err){
         } else {
-          data = data.replace("${$CLASSCODE_HOOK$}$", classcode);
-          response.send(data);
+          var context = {"classcode": classcode};
+          response.send(compileHandlebars(file, context));
         }
     });
 });
 
 // Hack to control api endpoint between development and production
-// TODO: HELLA SLOW FIND A BETTER SOLUTION
 app.get('/js/quiz.js', function(request, response){
-    var course_uri = "'" + (port == 5000 ? "http://localhost:5000" : "http://quizhours.herokuapp.com");
-    course_uri += "/api/courses/" + request.query.classcode + "'";
-    fs.readFile('public/javascripts/quiz.js', 'utf8', function(err, data){
+    var course_uri = (port == 5000 ? "http://localhost:5000" : "http://quizhours.herokuapp.com");
+    course_uri += "/api/courses/" + request.query.classcode;
+    fs.readFile('public/javascripts/quiz.js', 'utf8', function(err, file){
         if(err) {
         } else {
-          data = data.replace("${$URI_HOOK$}$", course_uri);
-          response.send(data);
+          var context = {"uriHook": course_uri};
+          response.send(compileHandlebars(file, context));
+    });
+});
+
+// Hack, replace with templating
+app.get('/quizbuilder', function(request, response){
+    var classcode = request.query.classcode;
+    // TODO: add code to check for classcode, return error if not present/valid
+    fs.readFile('quizbuilder/quizbuilder.html', 'utf8', function(err, file){
+        if(err){
+        } else {
+          file = file.replace("${$CLASSCODE_HOOK$}$", classcode);
+          response.send(file);
+        }
+    });
+});
+
+// Hack, replace with templating
+app.get('/quizbuilder/quizbuilder.js', function(request, response){
+    var course_uri = "'" + (port == 5000 ? "http://localhost:5000" : "http://quizhours.herokuapp.com");
+    course_uri += "/api/courses/" + request.query.classcode + "'";
+    fs.readFile('quizbuilder/quizbuilder.js', 'utf8', function(err, file){
+        if(err) {
+          //res.send(err);
+        } else {
+          file = file.replace("${$URI_HOOK$}$", course_uri);
+          response.send(file);
         }
     });
 });

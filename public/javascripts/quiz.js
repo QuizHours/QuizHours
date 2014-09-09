@@ -1,5 +1,5 @@
-/*Global variables for AJAX request and response*/
-var ajax_url = ${$URI_HOOK$}$; /* Environment specific: prod vs dev*/
+(function(){/*Global variables for AJAX request and response*/
+var ajax_url = '{{uriHook}}'; /* Environment specific: prod vs dev*/
 var data;
 
 $(document).ready(function() {
@@ -128,3 +128,4 @@ function publish_question(question_data) {
 function refresh_mathjax() {
 	MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
+})();

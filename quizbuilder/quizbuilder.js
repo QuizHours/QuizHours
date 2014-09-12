@@ -14,6 +14,7 @@
         console.log("before load data");
         $('#save-question-btn').hide();
         $('#delete-question-btn').hide();
+        $('#save-all-changes-btn').hide();
         load_course_data();
     });
     
@@ -52,9 +53,7 @@
       }
       
       function register_event_listeners(){
-        // EL for clicking on a new quiz
-        // On click, load all questions into question list
-        // & register event listener for clicking new question
+        // EL for selecting a different quiz
         $('.quiz-select').change(function(e){
             var index = $(this).val();
             if(index !== 'default'){
@@ -67,6 +66,7 @@
             }
         });
         
+        // EL for selecting a different question
         $('.question-select').change(function(e){
             var index = $(this).val();
             var quizIndex = $('.quiz-select').val();
@@ -96,6 +96,7 @@
             }
         });
         
+        // EL for saving a question locally
         $('#save-question-btn').click(function(e){
             e.preventDefault();
             var quizIndex = $('.quiz-select').val();
@@ -110,14 +111,16 @@
         });
         
         $('#delete-question-btn').click(function(e){
-            e.preventDefault();
+            /*e.preventDefault();
             var quizIndex = $('.quiz-select').val();
             var questionIndex = $('.question-select').val();
             var questionList = data.quizzes[quizIndex];
             var question = questionList[questionIndex];
             
-            data.quizzes[quizIndex][questionIndex] = {};
+            data.quizzes[quizIndex][questionIndex] = {};*/
         });
         
+        
+        $
       }
 })();

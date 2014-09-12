@@ -8,7 +8,7 @@
             event.preventDefault();
             var classcode = $('#classcode').val();
             // TODO add an ajax check for validity here
-            location.href = '/quiz?classcode='+classcode;
+            location.href = '/course/'+classcode;
         });
         $(this).hide();
     });

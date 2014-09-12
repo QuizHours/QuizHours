@@ -97,8 +97,8 @@ app.use('/api', router);
 
 // Every extension handled by app.VERB is functionality for the webapp
 
-app.get('/quiz', function(request, response){
-    var classcode = request.query.classcode;
+app.get('/course/:classcode', function(request, response){
+    var classcode = request.params.classcode;
     // TODO: add code to check for classcode, return error if not present/valid
     fs.readFile('public/quiz.html', 'utf8', function(err, file){
         if(err){
@@ -110,9 +110,9 @@ app.get('/quiz', function(request, response){
 });
 
 // Hack to control api endpoint between development and production
-app.get('/js/quiz.js', function(request, response){
+app.get('/js/:classcode/quiz.js', function(request, response){
     var course_uri = (port == 5000 ? "http://localhost:5000" : "http://quizhours.herokuapp.com");
-    course_uri += "/api/courses/" + request.query.classcode;
+    course_uri += "/api/courses/" + request.params.classcode;
     fs.readFile('public/javascripts/quiz.js', 'utf8', function(err, file){
         if(err) {
         } else {
@@ -122,8 +122,8 @@ app.get('/js/quiz.js', function(request, response){
     });
 });
 
-app.get('/quizbuilder', function(request, response){
-    var classcode = request.query.classcode;
+app.get('/qb/course/:classcode', function(request, response){
+    var classcode = request.params.classcode;
     // TODO: add code to check for classcode, return error if not present/valid
     fs.readFile('quizbuilder/quizbuilder.html', 'utf8', function(err, file){
         if(err){
@@ -134,9 +134,9 @@ app.get('/quizbuilder', function(request, response){
     });
 });
 
-app.get('/quizbuilder/quizbuilder.js', function(request, response){
+app.get('/qb/js/:classcode', function(request, response){
     var course_uri = (port == 5000 ? "http://localhost:5000" : "http://quizhours.herokuapp.com");
-    course_uri += "/api/courses/" + request.query.classcode;
+    course_uri += "/api/courses/" + request.params.classcode;
     fs.readFile('quizbuilder/quizbuilder.js', 'utf8', function(err, file){
         if(err) {
         } else {

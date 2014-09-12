@@ -23,7 +23,7 @@ function load_course_data() {
 		url: ajax_url
 	}).done(function(response){
 		/*Store the response globally*/
-		data = response[0];
+		data = response;
 		publish_all_quizzes();	
 	}).fail(function(){
 		$(".question_display").append("<div class = 'displayed_concept'>Something went wrong and no quizzes were loaded. Please report this issue to dev@quizhours.com</div>");

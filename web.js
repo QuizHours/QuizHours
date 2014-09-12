@@ -43,7 +43,7 @@ function compileHandlebars(inputString, context){
 // Every extension handled by router involves QuizHours API
 
 // Course data (GET/CREATE/UPDATE/DELETE course)
-router.route('/courses/:coursecode')
+router.route('/courses/:classcode')
 
   .get(function(req, res){
     //retrieve requested file from mongodb
@@ -53,7 +53,7 @@ router.route('/courses/:coursecode')
           throw conErr;
         }
         var collection = db.collection(mongoName);
-        collection.find({"classcode": req.params.coursecode}).toArray(function(findErr, results){
+        collection.find({"classcode": req.params.classcode}).toArray(function(findErr, results){
             if(findErr) {
               res.send(findErr);
               throw findErr;
@@ -65,16 +65,21 @@ router.route('/courses/:coursecode')
             sanitizedResults.name = results.name;
             sanitizedResults.quizzes = results.quizzes;*/
             // TODO: PATCH THIS SECURITY HOLE
-            var sanitizedResults = results;
-            res.json(sanitizedResults);
+            //var sanitizedResults = results;
+            //res.json(sanitizedResults);
+            results = results[0];
+            delete results.password;
+            delete results._id;
+            res.json(results);
             db.close();
         });
     });
   })
   
-  /*.post(function(req, res){
-      var courseData = req.body.course;
-      MongoClient.connect(mongoUri, function(conErr, db){
+  .post(function(req, res){
+      var courseData = req.body;
+      res.send(courseData);
+      /*MongoClient.connect(mongoUri, function(conErr, db){
           if(conErr) {
             res.send(conErr);
             throw conErr;
@@ -88,11 +93,37 @@ router.route('/courses/:coursecode')
               res.json({"result": "success"});
               db.close();
           });
-      });
-  });*/
-
-app.use(bodyParser.json());
+      });*/
+  })
   
+  .put(function(req, res){
+      var courseData = req.body;
+      MongoClient.connect(mongoUri, function(conErr, db){
+          if(conErr) {
+            res.send(conErr);
+            throw conErr;
+          }
+          var collection = db.collection(mongoName);
+          // We use "$set" when passing in data to prevent overwriting password
+          collection.findAndModify({"classcode": req.params.classcode}, 
+                                   [['_id', 'asc']],
+                                   {"$set": courseData}, 
+                                   {},
+          function(err, object){
+              if(err){
+                res.send(err);
+              } else {
+                res.send(object);
+              }
+              db.close();
+          });
+      });
+  });
+  
+// "50mb" is a hack to overcome Error 413 "Entity too large"
+// Is there a better solution?
+app.use(bodyParser.urlencoded({extended:true, limit:'50mb'}));
+
 app.use('/api', router);
 
 // Every extension handled by app.VERB is functionality for the webapp

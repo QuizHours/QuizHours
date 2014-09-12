@@ -31,8 +31,9 @@
         url: ajax_url 
        }).done(function(response){
          /* Store the response globally */
-         console.log(response);
-         data = response[0];
+         //console.log(response);
+         //data = response[0];
+         data = response;
          console.log("here");
          console.log(data);
          publish_all_quizzes();
@@ -93,6 +94,7 @@
               
               $('#save-question-btn').show();
               $('#delete-question-btn').show();
+              
             }
         });
         
@@ -108,6 +110,7 @@
             question.question = $('#question-text-edit').val();
             
             data.quizzes[quizIndex][questionIndex] = question;
+            $('#save-all-changes-btn').show();
         });
         
         $('#delete-question-btn').click(function(e){
@@ -121,6 +124,21 @@
         });
         
         
-        $
+        $('#save-all-changes-btn').click(function(e){
+            e.preventDefault();
+            console.log(data);
+            console.log('sent');
+            $.ajax({
+                type: "PUT", // Possible cross-browser compatibility issues 
+                url: ajax_url,
+                data: data
+            }).done(function(results){
+                console.log("success");
+                console.log(results);
+            }).fail(function(){
+                console.log("failed");
+                $(".question_display").append("<div class = 'displayed_concept'>Your quiz could not be saved. Please report this issue to dev@quizhours.com</div>");
+            });
+        });
       }
 })();

@@ -1,4 +1,5 @@
-(function(){/*Global variables for AJAX request and response*/
+(function(){
+  /*Global variables for AJAX request and response*/
 var ajax_url = '{{uriHook}}'; /* Environment specific: prod vs dev*/
 var data;
 

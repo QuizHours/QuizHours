@@ -5,10 +5,36 @@
 </head>
 <body>
   <h1>Quiz Builder</h1>
-  <button id="add-quiz-btn" class="btn btn-default btn-success">+</button>
-  <ul id="quiz-list"></ul>
-  <div id="quizzes-container"></div>
+  <div>
+    Quiz:
+    <select class="quiz-select">
+      <option value="default">Select a quiz...</option>
+    </select>
+  </div>
+  <div>
+    Questions:
+    <select class="question-select">
+      <option value="default">Select a question...</option>
+    </select>
+  </div>
+  <button id="save-question-btn" class="btn btn-default btn-success">Save Question</button>
+  <button id="delete-question-btn" class="btn btn-default btn-danger">Delete Question</button>
+  <h2>View Question:</h2>
+  <div class="question-display">
+    <h2></h2>
+    <p></p>
+    <ul></ul>
+    <div class="hint-box"></div>
+    <div class="explanation-box"></div>
+  </div>
   
+  <h2>Edit Question:</h2>
+  <div class="question-edit">
+    <label>Concept: <input type="text" id="concept-edit" /></label><br />
+    <label>Question:<br />
+    <textarea id="question-text-edit" /></textarea></label>
+  </div>
+   
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type = 'text/javascript'></script>
   <script type="text/javascript" src="/quizbuilder/quizbuilder.js?classcode={{classcode}}"></script>

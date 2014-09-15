@@ -76,6 +76,7 @@ router.route('/courses/:classcode')
     });
   })
   
+  //create new file in mongodb
   .post(function(req, res){
       var courseData = req.body;
       res.send(courseData);
@@ -96,6 +97,7 @@ router.route('/courses/:classcode')
       });*/
   })
   
+  //update file in mongodb
   .put(function(req, res){
       var courseData = req.body;
       MongoClient.connect(mongoUri, function(conErr, db){
@@ -113,7 +115,7 @@ router.route('/courses/:classcode')
               if(err){
                 res.send(err);
               } else {
-                res.send(object);
+                res.send(object); // NOTE: passes back pre-modification file!
               }
               db.close();
           });

@@ -2,7 +2,6 @@
     /* Global veriables for AJAX request and response */
     var ajax_url = '{{uriHook}}'; /* Environment specific: prod vs dev */
     var data;
-    console.log("in function scope");
     $(document).ready(function(){
         /* MathJax Confguration for inline disply and to hide all messages */
         MathJax.Hub.Config({
@@ -11,7 +10,9 @@
             },
             messageStyle: "none"
         });
-        console.log("before load data");
+
+        $('.question-display').hide();
+        $('.question-edit').hide();
         $('#save-question-btn').hide();
         $('#delete-question-btn').hide();
         $('#save-all-changes-btn').hide();
@@ -31,11 +32,7 @@
         url: ajax_url 
        }).done(function(response){
          /* Store the response globally */
-         //console.log(response);
-         //data = response[0];
          data = response;
-         console.log("here");
-         console.log(data);
          publish_all_quizzes();
          register_event_listeners();
        }).fail(function(){
@@ -58,7 +55,6 @@
         $('.quiz-select').change(function(e){
             var index = $(this).val();
             if(index !== 'default'){
-              console.log(index);
               var questionSelect = $('.question-select');
               var questionList = data.quizzes[index];
               $.each(questionList, function(index, question){
@@ -72,13 +68,12 @@
             var index = $(this).val();
             var quizIndex = $('.quiz-select').val();
             if(index !== 'default'){
-              console.log(index);
               var questionDisplay = $('.question-display');
               var questionEdit = $('.question-edit');
               var questionList = data.quizzes[quizIndex];
               var question = questionList[index];
               
-              questionDisplay.find('h2').html(question.concept);
+              questionDisplay.find('h3').html(question.concept);
               questionDisplay.find('p').html(question.question);
               var answersDisplay = questionDisplay.find('ul');
               answersDisplay.html("");
@@ -92,8 +87,10 @@
               questionEdit.find('#concept-edit').val(question.concept);
               questionEdit.find('#question-text-edit').val(question.question);
               
+              $('.question-display').show();
+              $('.question-edit').show();
               $('#save-question-btn').show();
-              $('#delete-question-btn').show();
+              //$('#delete-question-btn').show();
               
             }
         });
@@ -126,17 +123,14 @@
         
         $('#save-all-changes-btn').click(function(e){
             e.preventDefault();
-            console.log(data);
-            console.log('sent');
             $.ajax({
                 type: "PUT", // Possible cross-browser compatibility issues 
                 url: ajax_url,
                 data: data
             }).done(function(results){
-                console.log("success");
-                console.log(results);
+                // Hack to quickly propagate changes to qb view
+                location.reload(true); // "true" forces reload not from cache
             }).fail(function(){
-                console.log("failed");
                 $(".question_display").append("<div class = 'displayed_concept'>Your quiz could not be saved. Please report this issue to dev@quizhours.com</div>");
             });
         });

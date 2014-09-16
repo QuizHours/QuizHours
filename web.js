@@ -8,6 +8,7 @@ var WebSocketServer = require('ws').Server,
 	express = require('express'),
 	app = express(),
 	port = process.env.PORT || 5000,
+  courseUriBase = (port == 5000 ? "http://localhost:5000" : "http://www.quizhours.com"),
 	mongoUri = process.env.MONGOHQ_URL || 'mongodb://localhost:27017',
 	mongoName = 'courses',
   router = express.Router();
@@ -144,8 +145,8 @@ app.get('/course/:classcode', function(request, response){
 
 // Hack to control api endpoint between development and production
 app.get('/js/:classcode/quiz.js', function(request, response){
-    var course_uri = (port == 5000 ? "http://localhost:5000" : "http://quizhours.herokuapp.com");
-    course_uri += "/api/courses/" + request.params.classcode;
+    //var course_uri = (port == 5000 ? "http://localhost:5000" : "http://quizhours.herokuapp.com");
+    course_uri = courseUriBase + "/api/courses/" + request.params.classcode;
     fs.readFile('public/javascripts/quiz.js', 'utf8', function(err, file){
         if(err) {
         } else {
@@ -168,8 +169,8 @@ app.get('/qb/course/:classcode', function(request, response){
 });
 
 app.get('/qb/js/:classcode', function(request, response){
-    var course_uri = (port == 5000 ? "http://localhost:5000" : "http://quizhours.herokuapp.com");
-    course_uri += "/api/courses/" + request.params.classcode;
+    //var course_uri = (port == 5000 ? "http://localhost:5000" : "http://quizhours.herokuapp.com");
+    course_uri = courseUriBase + "/api/courses/" + request.params.classcode;
     fs.readFile('quizbuilder/quizbuilder.js', 'utf8', function(err, file){
         if(err) {
         } else {

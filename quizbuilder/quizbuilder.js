@@ -73,6 +73,7 @@
               var questionList = data.quizzes[quizIndex];
               var question = questionList[index];
               
+              // Render question display view
               questionDisplay.find('h3').html(question.concept);
               questionDisplay.find('p').html(question.question);
               var answersDisplay = questionDisplay.find('ul');
@@ -82,11 +83,20 @@
               });
               questionDisplay.find('.hint-box').html(question.hint);
               questionDisplay.find('.explanation-box').html(question.explanation);
-              refresh_mathjax();
+              refresh_mathjax(); // Refresh mathjax BEFORE rendering question edit view
               
+              // Render question edit view
               questionEdit.find('#concept-edit').val(question.concept);
               questionEdit.find('#question-text-edit').val(question.question);
-              
+              var answersEdit = questionEdit.find('.answer-edit-box');
+              answersEdit.html("");
+              $.each(question.answers, function(index, answer){
+                  answersEdit.append('<label>Answer '+(index+1)+': <input type="text" class="answer-edit" value="'+answer.content+'" /></label><br />');
+              });
+              questionEdit.find('#hint-edit').val(question.hint);
+              questionEdit.find('#explanation-edit').val(question.explanation);
+
+              // Display views and controls
               $('.question-display').show();
               $('.question-edit').show();
               $('#save-question-btn').show();
@@ -105,8 +115,15 @@
             
             question.concept = $('#concept-edit').val();
             question.question = $('#question-text-edit').val();
+            $('.answer-edit').each(function(index){
+                console.log($(this).val());
+                question.answers[index]['content'] = $(this).val();
+            });
+            question.hint = $('#hint-edit').val();
+            question.explanation = $('#explanation-edit').val();
             
             data.quizzes[quizIndex][questionIndex] = question;
+            console.log(question);
             $('#save-all-changes-btn').show();
         });
         
@@ -129,7 +146,7 @@
                 data: data
             }).done(function(results){
                 // Hack to quickly propagate changes to qb view
-                location.reload(true); // "true" forces reload not from cache
+                location.reload(); // doesn't force reload without cache; possible problem
             }).fail(function(){
                 $(".question_display").append("<div class = 'displayed_concept'>Your quiz could not be saved. Please report this issue to dev@quizhours.com</div>");
             });

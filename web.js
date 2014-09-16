@@ -59,15 +59,6 @@ router.route('/courses/:classcode')
               res.send(findErr);
               throw findErr;
             }
-            /*if(typeof(results) == 'string')
-              results = JSON.parse(results);
-            var sanitizedResults = {};
-            sanitizedResults.classcode = results.classcode;
-            sanitizedResults.name = results.name;
-            sanitizedResults.quizzes = results.quizzes;*/
-            // TODO: PATCH THIS SECURITY HOLE
-            //var sanitizedResults = results;
-            //res.json(sanitizedResults);
             results = results[0];
             delete results.password;
             delete results._id;
@@ -100,7 +91,7 @@ router.route('/courses/:classcode')
   
   //update file in mongodb
   .put(function(req, res){
-      var courseData = req.body;
+      var courseData = req.body.data;
       MongoClient.connect(mongoUri, function(conErr, db){
           if(conErr) {
             res.send(conErr);
@@ -125,7 +116,9 @@ router.route('/courses/:classcode')
   
 // "50mb" is a hack to overcome Error 413 "Entity too large"
 // Is there a better solution?
-app.use(bodyParser.urlencoded({extended:true, limit:'50mb'}));
+//app.use(bodyParser.urlencoded({extended:true, limit:'50mb'}));
+app.use(bodyParser.json({limit:'50mb'}));
+//app.use(bodyParser({limit:'50mb'}));
 
 app.use('/api', router);
 

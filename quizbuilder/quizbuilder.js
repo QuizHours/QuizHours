@@ -91,7 +91,14 @@
               var answersEdit = questionEdit.find('.answer-edit-box');
               answersEdit.html("");
               $.each(question.answers, function(index, answer){
-                  answersEdit.append('<label>Answer '+(index+1)+': <input type="text" class="answer-edit" value="'+answer.content+'" /></label><br />');
+                console.log(index + ' ' + answer.isCorrect);
+                  answersEdit.append('<label>Answer '+(index+1)+': <input type="text" class="answer-edit" value="'+answer.content+'" />'+
+                    '<input type="checkbox" class="answer-iscorrect-edit" value="'+index+'" /></label><br />');
+                    if(answer.isCorrect){
+                      $('.answer-iscorrect-edit[value='+index+']').prop('checked', true);
+                      console.log(answer.isCorrect);
+                      console.log(typeof(answer.isCorrect));
+                    }
               });
               questionEdit.find('#hint-edit').val(question.hint);
               questionEdit.find('#explanation-edit').val(question.explanation);
@@ -116,8 +123,11 @@
             question.concept = $('#concept-edit').val();
             question.question = $('#question-text-edit').val();
             $('.answer-edit').each(function(index){
-                console.log($(this).val());
                 question.answers[index]['content'] = $(this).val();
+                question.answers[index]['isCorrect'] = false;
+            });
+            $('.answer-iscorrect-edit:checked').each(function(index){
+                question.answers[$(this).val()]['isCorrect'] = true;
             });
             question.hint = $('#hint-edit').val();
             question.explanation = $('#explanation-edit').val();
@@ -141,9 +151,10 @@
         $('#save-all-changes-btn').click(function(e){
             e.preventDefault();
             $.ajax({
-                type: "PUT", // Possible cross-browser compatibility issues 
+                type: "PUT", // Possible cross-browser compatibility issues
+                contentType: "application/json", 
                 url: ajax_url,
-                data: data
+                data: JSON.stringify({"data": data})
             }).done(function(results){
                 // Hack to quickly propagate changes to qb view
                 location.reload(); // doesn't force reload without cache; possible problem

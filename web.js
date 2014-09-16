@@ -17,7 +17,7 @@ MongoClient.connect(mongoUri, function(err, db){
   if(err) throw err;
   db.collection(mongoName).drop(); //clear collection for time being while testing
   var collection = db.collection(mongoName);
-  var filename = 'course-template1.json';
+  var filename = 'course-template2.json';
   fs.readFile(path.join(process.cwd(), '/data/courses/'+filename), 'utf8', function(err, data){
     var initialCourse;
     if(err){

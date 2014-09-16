@@ -91,14 +91,8 @@
               var answersEdit = questionEdit.find('.answer-edit-box');
               answersEdit.html("");
               $.each(question.answers, function(index, answer){
-                console.log(index + ' ' + answer.isCorrect);
                   answersEdit.append('<label>Answer '+(index+1)+': <input type="text" class="answer-edit" value="'+answer.content+'" />'+
-                    '<input type="checkbox" class="answer-iscorrect-edit" value="'+index+'" /></label><br />');
-                    if(answer.isCorrect){
-                      $('.answer-iscorrect-edit[value='+index+']').prop('checked', true);
-                      console.log(answer.isCorrect);
-                      console.log(typeof(answer.isCorrect));
-                    }
+                    '<input type="checkbox" class="answer-iscorrect-edit" value="'+index+'" '+(answer.isCorrect ? "checked='checked'" : "")+'/></label><br />');
               });
               questionEdit.find('#hint-edit').val(question.hint);
               questionEdit.find('#explanation-edit').val(question.explanation);
@@ -133,7 +127,6 @@
             question.explanation = $('#explanation-edit').val();
             
             data.quizzes[quizIndex][questionIndex] = question;
-            console.log(question);
             $('#save-all-changes-btn').show();
         });
         

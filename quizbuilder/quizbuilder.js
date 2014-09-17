@@ -73,11 +73,18 @@
               var questionList = data.quizzes[quizIndex];
               var question = questionList[index];
               
+              // Clear question display view
+              questionDisplay.find('h3').html("");
+              questionDisplay.find('p').html("");
+              questionDisplay.find('ul').html("");
+              questionDisplay.find('.hint-box').html("");
+              questionDisplay.find('.explanation-box').html("");
+
               // Render question display view
               questionDisplay.find('h3').html(question.concept);
               questionDisplay.find('p').html(question.question);
               var answersDisplay = questionDisplay.find('ul');
-              answersDisplay.html("");
+              //answersDisplay.html("");
               $.each(question.answers, function(index, answer){
                   answersDisplay.append('<li style="list-style-type: none;" class="answer">'+answer.content+'</li>');
               });
@@ -85,6 +92,13 @@
               questionDisplay.find('.explanation-box').html(question.explanation);
               refresh_mathjax(); // Refresh mathjax BEFORE rendering question edit view
               
+              // Clear question edit view
+              /*questionEdit.find('#concept-edit').val("");
+              questionEdit.find('#question-text-edit').val("");
+              questionEdit.find('.answer-edit-box').html("");
+              questionEdit.find('#hint-edit').val("");
+              questionEdit.find('#explanation-edit').val("");*/
+
               // Render question edit view
               questionEdit.find('#concept-edit').val(question.concept);
               questionEdit.find('#question-text-edit').val(question.question);
@@ -101,7 +115,7 @@
               $('.question-display').show();
               $('.question-edit').show();
               $('#save-question-btn').show();
-              //$('#delete-question-btn').show();
+              $('#delete-question-btn').show();
               
             }
         });
@@ -131,13 +145,20 @@
         });
         
         $('#delete-question-btn').click(function(e){
-            /*e.preventDefault();
+            e.preventDefault();
             var quizIndex = $('.quiz-select').val();
             var questionIndex = $('.question-select').val();
             var questionList = data.quizzes[quizIndex];
-            var question = questionList[questionIndex];
-            
-            data.quizzes[quizIndex][questionIndex] = {};*/
+            var newQuestionIndex = (parseInt($('.question-select').val()) + 1) % ($('.question-select > option').size() - 1);
+            console.log('Delete button clicked!');
+            console.log(parseInt($('.question-select').val())+1);
+            console.log($('.question-select > option').size()-1);
+            console.log(newQuestionIndex);
+            //var question = questionList[questionIndex];
+            //data.quizzes[quizIndex][questionIndex] = {};
+            //data.quizzes[quizIndex] = questionList.splice(questionIndex, 1);
+            $('.question-select').val(newQuestionIndex);
+            $('.question-select').change();
         });
         
         

@@ -253,27 +253,37 @@ function publish_question(question_data) {
     build_edit_form(question_data);
 }
 
+/*
+* Build the various text areas used to edit the
+* questions
+*/
 function build_edit_form(question_data) {
-    $(".edit_container").append("<input class = 'major_edit' id = 'edit_concept' value = '" + question_data.concept+ "'></input>");
-    $(".edit_container").append("<input class = 'major_edit' id = 'edit_question' value = '" + question_data.question+ "'></input>");
+    $(".edit_container").append("<div class = 'heading'>Edit Question</div>");
+    $(".edit_container").append("<textarea class = 'major_edit' id = 'edit_concept'>"+ question_data.concept +"</textarea>");
+    $(".edit_container").append("<textarea class = 'major_edit' id = 'edit_question'>" + question_data.question+ "</textarea>");
 
-    $(".edit_container").append("<div class = 'answers_edit_container'><input class = 'answers_edit' id = 'edit_answer0' value = '" + question_data.answers[0].content+ "'></input>");
-    $(".edit_container").append("<input class = 'answers_edit' id = 'edit_answer1' value = '" + question_data.answers[1].content+ "'></input>");
-    $(".edit_container").append("<input class = 'answers_edit' id = 'edit_answer2' value = '" + question_data.answers[2].content+ "'></input>");
-    $(".edit_container").append("<input class = 'answers_edit' id = 'edit_answer3' value = '" + question_data.answers[3].content+ "'></input></div>");
-
-    // Build the radio buttons for the correct answer
-    $(".edit_container").append("<form id = 'correct_answers'></form>");
+    //Build the container for the answers
+    $(".edit_container").append("<div class = 'answers_edit_container'>")
     for(var i = 0; i < 4; i++) {
-        var radio_button = "<input type = 'radio' name = 'isCorrect' class = 'radio_button' id = 'isCorrect" + i +"' ";
-        if(question_data.answers[i].isCorrect) radio_button += "checked";
-        radio_button += ">";
+        $(".answers_edit_container").append("<div class = 'possible_edit_answer' id = 'possible_edit_answer"+i+"'>");
+        
+        // Build the check box, with a check if highlighted
+        var check_box_html = "<input type = 'checkbox' class = 'check_box' id = 'isCorrect" + i +"' ";
+        if(question_data.answers[i].isCorrect) check_box_html += "checked";
+        check_box_html += ">";
 
-        $("#correct_answers").append(radio_button);
+        $("#possible_edit_answer"+i).append("<textarea class = 'answers_edit' id = 'edit_answer"+ i +"'>" + question_data.answers[i].content+ "</textarea>");
+        $("#possible_edit_answer"+i).append(check_box_html);
+        $(".answers_edit_container").append("</div>");
     }
 
-    $(".edit_container").append("<input class = 'major_edit' id = 'edit_explanation' value = '" + question_data.explanation+ "'></input>");
-    $(".edit_container").append("<input class = 'major_edit' id = 'edit_hint' value = '" + question_data.hint+ "'></input>");
+    $(".edit_container").append("</div>");
+
+    $(".edit_container").append("<textarea class = 'major_edit' id = 'edit_explanation'>" + question_data.explanation+ "</textarea>");
+    $(".edit_container").append("<textarea class = 'major_edit' id = 'edit_hint'>" + question_data.hint+ "</textarea>");
+
+    //Super hacky way to add space to the bottom of the view
+    $(".edit_container").append("<div class = 'buffer_space'></div>");
 }
 
 function refresh_mathjax() {

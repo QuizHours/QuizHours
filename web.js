@@ -50,23 +50,25 @@ router.route('/courses/:classcode')
 
   .get(function(req, res){
     //retrieve requested file from mongodb
-    MongoClient.connect(mongoUri, function(conErr, db){
-        if(conErr) {
-        } else {
-          var collection = db.collection(mongoCourseCollectionName);
-          collection.find({"classcode": req.params.classcode}).toArray(function(findErr, results){
-              if(findErr) {
-                res.send(findErr);
-              } else {
-                results = results[0];
-                delete results.password;
-                delete results._id;
-                res.json(results);
-              }
-              db.close();
-          });
-        }
-    });
+    if(typeof(req.params.classcode) !== 'undefined'){
+      MongoClient.connect(mongoUri, function(conErr, db){
+          if(conErr) {
+          } else {
+            var collection = db.collection(mongoCourseCollectionName);
+            collection.find({"classcode": req.params.classcode}).toArray(function(findErr, results){
+                if(findErr) {
+                  res.send(findErr);
+                } else {
+                  results = results[0];
+                  delete results.password;
+                  delete results._id;
+                  res.json(results);
+                }
+                db.close();
+            });
+          }
+      });
+    }
   })
   
   //create new file in mongodb
@@ -93,25 +95,27 @@ router.route('/courses/:classcode')
   //update file in mongodb
   .put(function(req, res){
       var courseData = req.body.data;
-      MongoClient.connect(mongoUri, function(conErr, db){
-          if(conErr) {
-          } else {
-            var collection = db.collection(mongoCourseCollectionName);
-            // We use "$set" when passing in data to prevent overwriting password
-            collection.findAndModify({"classcode": req.params.classcode}, 
-                                     [['_id', 'asc']],
-                                     {"$set": courseData}, 
-                                     {},
-            function(err, object){
-                if(err){
-                  res.send(err);
-                } else {
-                  res.send(object); // NOTE: passes back pre-modification file!
-                }
-                db.close();
-            });
-          }
-      });
+      if(typeof(req.params.classcode) !== 'undefined' && typeof(courseData) !== 'undefined'){
+        MongoClient.connect(mongoUri, function(conErr, db){
+            if(conErr) {
+            } else {
+              var collection = db.collection(mongoCourseCollectionName);
+              // We use "$set" when passing in data to prevent overwriting password
+              collection.findAndModify({"classcode": req.params.classcode}, 
+                                       [['_id', 'asc']],
+                                       {"$set": courseData}, 
+                                       {},
+              function(err, object){
+                  if(err){
+                    res.send(err);
+                  } else {
+                    res.send(object); // NOTE: passes back pre-modification file!
+                  }
+                  db.close();
+              });
+            }
+        });
+      }
   });
 
 router.route('/feedback')
@@ -139,20 +143,22 @@ router.route('/feedback')
 
   .post(function(req, res){
     var feedback = req.body.feedback;
-    MongoClient.connect(mongoUri, function(conErr, db){
-      if(conErr){
-      } else {
-        var collection = db.collection(mongoFeedbackCollectionName);
-        collection.insert(feedback, function(insertErr, docs){
-          if(insertErr){
-            res.json({"success": false});
-          } else {
-            res.json({"success": true});
-          }
-          db.close();
-        });
-      }
-    });
+    if(typeof(req.body.feedback) !== 'undefined'){
+      MongoClient.connect(mongoUri, function(conErr, db){
+        if(conErr){
+        } else {
+          var collection = db.collection(mongoFeedbackCollectionName);
+          collection.insert(feedback, function(insertErr, docs){
+            if(insertErr){
+              res.json({"success": false});
+            } else {
+              res.json({"success": true});
+            }
+            db.close();
+          });
+        }
+      });
+    }
   });
 
 // "1mb" is a hack to overcome Error 413 "Entity too large"

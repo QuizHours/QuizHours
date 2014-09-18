@@ -11,6 +11,7 @@
             messageStyle: "none"
         });
 
+        $('.question-select').hide();
         $('.question-display').hide();
         $('.question-edit').hide();
         $('#save-question-btn').hide();
@@ -23,6 +24,34 @@
       MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
     }
     
+    // Convenience function for parsing int
+    function pInt(numStr){
+      return parseInt(numStr, 10);
+    }
+
+    function clearQuestionDisplay(){
+      var questionDisplay = $('.question-display');
+      questionDisplay.find('h3').html("");
+      questionDisplay.find('p').html("");
+      questionDisplay.find('ul').html("");
+      questionDisplay.find('.hint-box').html("");
+      questionDisplay.find('.explanation-box').html("");
+    }
+
+    function clearQuestionEdit(){
+      var questionEdit = $('.question-edit');
+      questionEdit.html("");
+      questionEdit.append('<h2>Edit Question:</h2>');
+      questionEdit.append('<label>Concept: <input type="text" id="concept-edit" /></label><br />');
+      questionEdit.append('<label>Question:<br />');
+      questionEdit.append('<textarea id="question-text-edit" /></textarea></label>');
+      questionEdit.append('<div class="answer-edit-box"></div>');
+      questionEdit.append('<label>Hint:<br />');
+      questionEdit.append('<textarea id="hint-edit"></textarea></label><br />');
+      questionEdit.append('<label>Explanation:<br />');
+      questionEdit.append('<textarea id="explanation-edit"></textarea></label>');
+    }
+
     /* 
      * Makes an AJAX call as soon as the page has loaded to get all course data.
      * Stores response as a global JSON object.
@@ -53,10 +82,12 @@
       function register_event_listeners(){
         // EL for selecting a different quiz
         $('.quiz-select').change(function(e){
-            var index = $(this).val();
+            var index = pInt($(this).val());
             if(index !== 'default'){
-              var questionSelect = $('.question-select');
               var questionList = data.quizzes[index];
+              var questionSelect = $('.question-select');
+              questionSelect.show();
+              questionSelect.html("<option value=\"default\">Select a question...</option>");
               $.each(questionList, function(index, question){
                   questionSelect.append('<option value="'+index+'">'+question.concept+'</option>');
               });
@@ -65,8 +96,8 @@
         
         // EL for selecting a different question
         $('.question-select').change(function(e){
-            var index = $(this).val();
-            var quizIndex = $('.quiz-select').val();
+            var index = pInt($(this).val());
+            var quizIndex = pInt($('.quiz-select').val());
             if(index !== 'default'){
               var questionDisplay = $('.question-display');
               var questionEdit = $('.question-edit');
@@ -74,11 +105,7 @@
               var question = questionList[index];
               
               // Clear question display view
-              questionDisplay.find('h3').html("");
-              questionDisplay.find('p').html("");
-              questionDisplay.find('ul').html("");
-              questionDisplay.find('.hint-box').html("");
-              questionDisplay.find('.explanation-box').html("");
+              clearQuestionDisplay();
 
               // Render question display view
               questionDisplay.find('h3').html(question.concept);
@@ -93,11 +120,7 @@
               refresh_mathjax(); // Refresh mathjax BEFORE rendering question edit view
               
               // Clear question edit view
-              /*questionEdit.find('#concept-edit').val("");
-              questionEdit.find('#question-text-edit').val("");
-              questionEdit.find('.answer-edit-box').html("");
-              questionEdit.find('#hint-edit').val("");
-              questionEdit.find('#explanation-edit').val("");*/
+              clearQuestionEdit();
 
               // Render question edit view
               questionEdit.find('#concept-edit').val(question.concept);
@@ -123,8 +146,8 @@
         // EL for saving a question locally
         $('#save-question-btn').click(function(e){
             e.preventDefault();
-            var quizIndex = $('.quiz-select').val();
-            var questionIndex = $('.question-select').val();
+            var quizIndex = pInt($('.quiz-select').val());
+            var questionIndex = pInt($('.question-select').val());
             var questionList = data.quizzes[quizIndex];
             var question = questionList[questionIndex];
             
@@ -135,7 +158,7 @@
                 question.answers[index]['isCorrect'] = false;
             });
             $('.answer-iscorrect-edit:checked').each(function(index){
-                question.answers[$(this).val()]['isCorrect'] = true;
+                question.answers[pInt($(this).val())]['isCorrect'] = true;
             });
             question.hint = $('#hint-edit').val();
             question.explanation = $('#explanation-edit').val();
@@ -146,24 +169,43 @@
         
         $('#delete-question-btn').click(function(e){
             e.preventDefault();
-            var quizIndex = $('.quiz-select').val();
-            var questionIndex = $('.question-select').val();
+            var quizIndex = pInt($('.quiz-select').val());
+            var questionIndex = pInt($('.question-select').val());
             var questionList = data.quizzes[quizIndex];
-            var newQuestionIndex = (parseInt($('.question-select').val()) + 1) % ($('.question-select > option').size() - 1);
-            console.log('Delete button clicked!');
-            console.log(parseInt($('.question-select').val())+1);
-            console.log($('.question-select > option').size()-1);
-            console.log(newQuestionIndex);
-            //var question = questionList[questionIndex];
-            //data.quizzes[quizIndex][questionIndex] = {};
-            //data.quizzes[quizIndex] = questionList.splice(questionIndex, 1);
-            $('.question-select').val(newQuestionIndex);
-            $('.question-select').change();
+            var newQuestionIndex = (questionIndex + 1) % ($('.question-select > option').size() - 1);
+            $('.question-select > option[value='+questionIndex+']').remove();
+            clearQuestionDisplay();
+            $('.question-edit').html("");
+            $('#save-question-btn').hide();
+            $('#delete-question-btn').hide();
+            $('#save-all-changes-btn').show();
+            data.quizzes[quizIndex][questionIndex] = null;
         });
         
         
         $('#save-all-changes-btn').click(function(e){
             e.preventDefault();
+
+            // Scrub out all deleted questions and quizzes (marked with null)
+            var newQuizzes = [];
+            $.each(data.quizzes, function(index, quiz){
+              if(quiz !== null){
+                console.log(quiz);
+                var newQuestions = [];
+                $.each(quiz, function(index, question){
+                  if(question !== null){
+                    console.log(question);
+                    newQuestions.push(question);
+                  }
+                });
+                quiz = newQuestions;
+                newQuizzes.push(quiz);
+              }
+            });
+            data.quizzes = newQuizzes;
+            console.log(data);
+
+            // Send request to server
             $.ajax({
                 type: "PUT", // Possible cross-browser compatibility issues
                 contentType: "application/json", 

@@ -5,7 +5,7 @@ body {
 }
 
 .header {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 
@@ -13,6 +13,7 @@ body {
 	height: 52px;
 
 	background-color: #14314F;
+	z-index: 1;
 }
 
 .logo {
@@ -79,7 +80,7 @@ body {
 }
 
 .sidebar {
-	position: absolute;
+	position: fixed;
 	top: 52px;
 	left: 0;
 	bottom: 0;
@@ -132,6 +133,7 @@ body {
 	bottom: 0;
 
 	color: #333;
+	padding-bottom: 500px;
 }
 
 .displayed_concept {
@@ -221,6 +223,15 @@ body {
   clear:both;
 }
 
+.heading {
+	text-align: center;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+
+	font-size: 36px;
+	border-bottom: 1px solid #CCC;
+}
+
 .edit_container {
 	margin: 10px;
 }
@@ -230,6 +241,7 @@ body {
 
 	font-size: 24px;
 	line-height: 30px;
+	height: 50px;
 
 	width: 100%;
 	max-width: 600px;
@@ -241,18 +253,19 @@ body {
 .answers_edit {
 	margin: 5px 10px;
 
-	max-width: 200px;
+	max-width: 300px;
 	display: inline-block;
 	width: 100%;
 	float: left;
 
 	font-size: 22px;
 	line-height: 20px;
+	height: 40px;
 	text-align: center;
 }
 
 .buttons_container {
-	position: absolute;
+	position: fixed;
 	bottom: 5px;
 	right: 5px;
 }
@@ -274,11 +287,12 @@ body {
 	color: #FFA500;
 }
 
-#correct_answers {
-	padding: 0 70px;
+.possible_edit_answer {
+	margin: auto;
+	width: 400px;
+	height: 60px;
 }
 
-.radio_button {
-	width: 100%;
-	max-width: 225px;
+.buffer_space {
+	height: 50px;
 }

@@ -17,6 +17,7 @@
         $('#delete-quiz-btn').hide();
         $('#save-question-btn').hide();
         $('#delete-question-btn').hide();
+        $('#add-question-btn').hide();
         $('#save-all-changes-btn').hide();
         load_course_data();
     });
@@ -75,8 +76,10 @@
       */
       function publish_all_quizzes() {
         var quizzes = data.quizzes;
+        var quizSelect = $('.quiz-select');
+        quizSelect.append('<option value="default">Select a quiz...</option>');
         $.each(quizzes, function(index, value){
-              $('.quiz-select').append('<option value="'+index+'">'+(index+1)+'</option>');
+              quizSelect.append('<option value="'+index+'">'+(index+1)+'</option>');
         });
       }
       
@@ -93,6 +96,7 @@
                   questionSelect.append('<option value="'+index+'">'+question.concept+'</option>');
               });
               $('#delete-quiz-btn').show();
+              $('#add-question-btn').show();
             }
         });
         
@@ -199,10 +203,45 @@
             $('.question-edit').html("");
             $('#save-question-btn').hide();
             $('#delete-question-btn').hide();
+            $('.question-select').hide();
+            $('#add-question-btn').hide();
             $('#save-all-changes-btn').show();
             data.quizzes[quizIndex] = null;
         });
         
+        // EL for adding a quiz locally
+        $('#add-quiz-btn').click(function(e){
+            e.preventDefault();
+            var newQuizIndex = $('.quiz-select').val();
+            newQuizIndex = (newQuizIndex === 'default' ? 0 : pInt(newQuizIndex)+1);
+            data.quizzes.splice(newQuizIndex, 0, []);
+            console.log(data.quizzes);
+            $('.quiz-select > option').remove();
+            $('#save-all-changes-btn').show();
+            publish_all_quizzes();
+        });
+
+        // EL for adding a question locally
+        $('#add-question-btn').click(function(e){
+            e.preventDefault();
+            var quizIndex = pInt($('.quiz-select').val());
+            var newQuestionIndex = $('.question-select').val();
+            newQuestionIndex = (newQuestionIndex === 'default' ? 0 : pInt(newQuestionIndex)+1);
+            var newQuestion = {};
+            newQuestion.concept = "New Question";
+            newQuestion.question = "";
+            newQuestion.answers = [{"content": "a", "isCorrect": true},
+                                    {"content": "b", "isCorrect": false},
+                                    {"content": "c", "isCorrect": false},
+                                    {"content": "d", "isCorrect": false}];
+            newQuestion.hint = "";
+            newQuestion.explanation = "";
+            data.quizzes[quizIndex].splice(newQuestionIndex, 0, newQuestion);
+            $('.quiz-select').change(); // triggers re-rendering of question-select dropdown
+            $('.question-select').val(newQuestionIndex);
+            $('.question-select').change();
+        });
+
         // Commit all local changes by sending them to the server
         $('#save-all-changes-btn').click(function(e){
             e.preventDefault();

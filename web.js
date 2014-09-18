@@ -52,21 +52,20 @@ router.route('/courses/:classcode')
     //retrieve requested file from mongodb
     MongoClient.connect(mongoUri, function(conErr, db){
         if(conErr) {
-          res.send(conErr);
-          throw conErr;
+        } else {
+          var collection = db.collection(mongoCourseCollectionName);
+          collection.find({"classcode": req.params.classcode}).toArray(function(findErr, results){
+              if(findErr) {
+                res.send(findErr);
+              } else {
+                results = results[0];
+                delete results.password;
+                delete results._id;
+                res.json(results);
+              }
+              db.close();
+          });
         }
-        var collection = db.collection(mongoCourseCollectionName);
-        collection.find({"classcode": req.params.classcode}).toArray(function(findErr, results){
-            if(findErr) {
-              res.send(findErr);
-              throw findErr;
-            }
-            results = results[0];
-            delete results.password;
-            delete results._id;
-            res.json(results);
-            db.close();
-        });
     });
   })
   
@@ -96,23 +95,22 @@ router.route('/courses/:classcode')
       var courseData = req.body.data;
       MongoClient.connect(mongoUri, function(conErr, db){
           if(conErr) {
-            res.send(conErr);
-            throw conErr;
+          } else {
+            var collection = db.collection(mongoCourseCollectionName);
+            // We use "$set" when passing in data to prevent overwriting password
+            collection.findAndModify({"classcode": req.params.classcode}, 
+                                     [['_id', 'asc']],
+                                     {"$set": courseData}, 
+                                     {},
+            function(err, object){
+                if(err){
+                  res.send(err);
+                } else {
+                  res.send(object); // NOTE: passes back pre-modification file!
+                }
+                db.close();
+            });
           }
-          var collection = db.collection(mongoCourseCollectionName);
-          // We use "$set" when passing in data to prevent overwriting password
-          collection.findAndModify({"classcode": req.params.classcode}, 
-                                   [['_id', 'asc']],
-                                   {"$set": courseData}, 
-                                   {},
-          function(err, object){
-              if(err){
-                res.send(err);
-              } else {
-                res.send(object); // NOTE: passes back pre-modification file!
-              }
-              db.close();
-          });
       });
   });
 
@@ -122,21 +120,20 @@ router.route('/feedback')
     //retrieve requested file from mongodb
     MongoClient.connect(mongoUri, function(conErr, db){
         if(conErr) {
-          res.send(conErr);
-          throw conErr;
+        } else {
+          var collection = db.collection(mongoFeedbackCollectionName);
+          collection.find().toArray(function(findErr, results){
+              if(findErr) {
+                res.send(findErr);
+              } else {
+                for(var i = 0; i < results.length; i++){
+                  delete results[i]._id;
+                }
+                res.json(results);
+              }
+              db.close();
+          });
         }
-        var collection = db.collection(mongoFeedbackCollectionName);
-        collection.find().toArray(function(findErr, results){
-            if(findErr) {
-              res.send(findErr);
-              throw findErr;
-            }
-            for(var i = 0; i < results.length; i++){
-              delete results[i]._id;
-            }
-            res.json(results);
-            db.close();
-        });
     });
   })
 
@@ -144,18 +141,17 @@ router.route('/feedback')
     var feedback = req.body.feedback;
     MongoClient.connect(mongoUri, function(conErr, db){
       if(conErr){
-        res.send(conErr);
-        throw conErr;
+      } else {
+        var collection = db.collection(mongoFeedbackCollectionName);
+        collection.insert(feedback, function(insertErr, docs){
+          if(insertErr){
+            res.json({"success": false});
+          } else {
+            res.json({"success": true});
+          }
+          db.close();
+        });
       }
-      var collection = db.collection(mongoFeedbackCollectionName);
-      collection.insert(feedback, function(insertErr, docs){
-        if(insertErr){
-          res.json({"success": false});
-          throw insertErr;
-        }
-        res.json({"success": true});
-        db.close();
-      });
     });
   });
 

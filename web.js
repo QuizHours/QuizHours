@@ -10,14 +10,16 @@ var WebSocketServer = require('ws').Server,
 	port = process.env.PORT || 5000,
   courseUriBase = (port == 5000 ? "http://localhost:5000" : "http://www.quizhours.com"),
 	mongoUri = process.env.MONGOHQ_URL || 'mongodb://localhost:27017',
-	mongoName = 'courses',
+	mongoCourseCollectionName = 'courses',
+  mongoFeedbackCollectionName = 'feedback',
   router = express.Router();
   
 MongoClient.connect(mongoUri, function(err, db){
   if(err) throw err;
-  db.collection(mongoName).drop(); //clear collection for time being while testing
-  var collection = db.collection(mongoName);
-  var filename = 'course-template2.json';
+  //db.collection(mongoCourseCollectionName).drop(); //clear collection for time being while testing
+  db.collection(mongoFeedbackCollectionName).drop(); //clear collection for time being while testing
+  /*var collection = db.collection(mongoCourseCollectionName);
+  var filename = 'course-template1.json'; // reset the demo file on each server restart
   fs.readFile(path.join(process.cwd(), '/data/courses/'+filename), 'utf8', function(err, data){
     var initialCourse;
     if(err){
@@ -33,7 +35,7 @@ MongoClient.connect(mongoUri, function(err, db){
           db.close();
       });
     });
-  });
+  });*/
 });
 
 function compileHandlebars(inputString, context){
@@ -53,7 +55,7 @@ router.route('/courses/:classcode')
           res.send(conErr);
           throw conErr;
         }
-        var collection = db.collection(mongoName);
+        var collection = db.collection(mongoCourseCollectionName);
         collection.find({"classcode": req.params.classcode}).toArray(function(findErr, results){
             if(findErr) {
               res.send(findErr);
@@ -77,7 +79,7 @@ router.route('/courses/:classcode')
             res.send(conErr);
             throw conErr;
           }
-          var collection = db.collection(mongoName);
+          var collection = db.collection(mongoCourseCollectionName);
           collection.insert(courseData, function(insertErr, docs){
               if(insertErr){
                 res.send(insertErr);
@@ -97,7 +99,7 @@ router.route('/courses/:classcode')
             res.send(conErr);
             throw conErr;
           }
-          var collection = db.collection(mongoName);
+          var collection = db.collection(mongoCourseCollectionName);
           // We use "$set" when passing in data to prevent overwriting password
           collection.findAndModify({"classcode": req.params.classcode}, 
                                    [['_id', 'asc']],
@@ -113,12 +115,53 @@ router.route('/courses/:classcode')
           });
       });
   });
-  
-// "50mb" is a hack to overcome Error 413 "Entity too large"
+
+router.route('/feedback')
+
+  .get(function(req, res){
+    //retrieve requested file from mongodb
+    MongoClient.connect(mongoUri, function(conErr, db){
+        if(conErr) {
+          res.send(conErr);
+          throw conErr;
+        }
+        var collection = db.collection(mongoFeedbackCollectionName);
+        collection.find().toArray(function(findErr, results){
+            if(findErr) {
+              res.send(findErr);
+              throw findErr;
+            }
+            for(var i = 0; i < results.length; i++){
+              delete results[i]._id;
+            }
+            res.json(results);
+            db.close();
+        });
+    });
+  })
+
+  .post(function(req, res){
+    var feedback = req.body.feedback;
+    MongoClient.connect(mongoUri, function(conErr, db){
+      if(conErr){
+        res.send(conErr);
+        throw conErr;
+      }
+      var collection = db.collection(mongoFeedbackCollectionName);
+      collection.insert(feedback, function(insertErr, docs){
+        if(insertErr){
+          res.json({"success": false});
+          throw insertErr;
+        }
+        res.json({"success": true});
+        db.close();
+      });
+    });
+  });
+
+// "1mb" is a hack to overcome Error 413 "Entity too large"
 // Is there a better solution?
-//app.use(bodyParser.urlencoded({extended:true, limit:'50mb'}));
-app.use(bodyParser.json({limit:'50mb'}));
-//app.use(bodyParser({limit:'50mb'}));
+app.use(bodyParser.json({limit:'1mb'}));
 
 app.use('/api', router);
 

@@ -14,6 +14,7 @@
         $('.question-select').hide();
         $('.question-display').hide();
         $('.question-edit').hide();
+        $('#delete-quiz-btn').hide();
         $('#save-question-btn').hide();
         $('#delete-question-btn').hide();
         $('#save-all-changes-btn').hide();
@@ -91,6 +92,7 @@
               $.each(questionList, function(index, question){
                   questionSelect.append('<option value="'+index+'">'+question.concept+'</option>');
               });
+              $('#delete-quiz-btn').show();
             }
         });
         
@@ -163,16 +165,18 @@
             question.hint = $('#hint-edit').val();
             question.explanation = $('#explanation-edit').val();
             
+            $('.question-select > option[value='+questionIndex+']').html(question.concept);
             data.quizzes[quizIndex][questionIndex] = question;
             $('#save-all-changes-btn').show();
         });
         
+        // EL for deleting a question locally
         $('#delete-question-btn').click(function(e){
             e.preventDefault();
             var quizIndex = pInt($('.quiz-select').val());
             var questionIndex = pInt($('.question-select').val());
             var questionList = data.quizzes[quizIndex];
-            var newQuestionIndex = (questionIndex + 1) % ($('.question-select > option').size() - 1);
+            //var newQuestionIndex = (questionIndex + 1) % ($('.question-select > option').size() - 1);
             $('.question-select > option[value='+questionIndex+']').remove();
             clearQuestionDisplay();
             $('.question-edit').html("");
@@ -182,7 +186,24 @@
             data.quizzes[quizIndex][questionIndex] = null;
         });
         
+        // EL for deleting a quiz locally
+        $('#delete-quiz-btn').click(function(e){
+            e.preventDefault();
+            var quizIndex = pInt($('.quiz-select').val());
+            var numQuestions = data.quizzes[quizIndex].length;
+            for(var i = 0; i < numQuestions; i++){
+              $('.question-select > option[value='+i+']').remove();
+            }
+            $('.quiz-select > option[value='+quizIndex+']').remove();
+            clearQuestionDisplay();
+            $('.question-edit').html("");
+            $('#save-question-btn').hide();
+            $('#delete-question-btn').hide();
+            $('#save-all-changes-btn').show();
+            data.quizzes[quizIndex] = null;
+        });
         
+        // Commit all local changes by sending them to the server
         $('#save-all-changes-btn').click(function(e){
             e.preventDefault();
 

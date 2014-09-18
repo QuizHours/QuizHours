@@ -1,53 +1,34 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+<html lang = "en">
 <head>
-  <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
-  <title>Quiz Builder</title>
+  <title>QuizBuilder</title>
+  <meta name = "robots" content = "index, follow">
+
+  <link rel = "stylesheet" type = "text/css" href = "../../stylesheets/quizbuilder.css">
+  <link rel="icon" href="../favicon.png">
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type = 'text/javascript'></script>
+  <script src = "/qb/js/{{classcode}}" type = "text/javascript"></script>
 </head>
 <body>
-  <h1>Quiz Builder</h1>
-  <button id="save-all-changes-btn" class="btn btn-default btn-success">Save Changes</button>
-  <div>
-    Quiz:
-    <select class="quiz-select">
-      
-    </select>
-    <!--<label> Publish Quiz? <input type="checkbox" id="quiz-published-edit"></label>-->
-    <button id="add-quiz-btn" class="btn btn-default btn-primary">Add Quiz</button>
-    <button id="delete-quiz-btn" class="btn btn-default btn-danger">Delete Quiz</button>
+  <div class = "header">
+    <div class = "logo"> QuizBuilder </div>
+    <div class = "quiz_list_wrapper">
+      <div class = "quiz_list"></div>
+    </div>
   </div>
-  <div>
-    Questions:
-    <select class="question-select">
-      
-    </select>
-    <button id="add-question-btn" class="btn btn-default btn-primary">Add Question</button>
+
+  <div class = "sidebar">
+    <div class = "question_list"></div>
   </div>
-  <button id="save-question-btn" class="btn btn-default btn-success">Save Question</button>
-  <button id="delete-question-btn" class="btn btn-default btn-danger">Delete Question</button>
-  
-  <div class="question-display">
-    <h2>View Question:</h2>
-    <h3></h3>
-    <p></p>
-    <ul></ul>
-    <div class="hint-box"></div>
-    <div class="explanation-box"></div>
+
+  <div class = "question_display"></div>
+  <div class = "buttons_container clearfix">
+    <div class = "button" id = "save_all">Save All</div>
+    <div class = "button" id = "question_save">Save Question</div>
+    <div class = "button" id = "question_delete">Delete Question</div>
+    <div class = "button" id = "quiz_delete">Delete Quiz</div>
   </div>
-  
-  <div class="question-edit">
-    <h2>Edit Question:</h2>
-    <label>Concept: <input type="text" id="concept-edit" /></label><br />
-    <label>Question:<br />
-    <textarea id="question-text-edit" /></textarea></label>
-    <div class="answer-edit-box"></div>
-    <label>Hint:<br />
-    <textarea id="hint-edit"></textarea></label><br />
-    <label>Explanation:<br />
-    <textarea id="explanation-edit"></textarea></label>
-  </div>
-   
-  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src = 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' type = 'text/javascript'></script>
-  <script type="text/javascript" src="/qb/js/{{classcode}}"></script>
 </body>
 </html>

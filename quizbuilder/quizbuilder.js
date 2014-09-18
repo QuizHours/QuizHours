@@ -1,282 +1,282 @@
 (function(){
-    /* Global veriables for AJAX request and response */
-    var ajax_url = '{{uriHook}}'; /* Environment specific: prod vs dev */
-    var data;
-    $(document).ready(function(){
-        /* MathJax Confguration for inline disply and to hide all messages */
-        MathJax.Hub.Config({
-            tex2jax: {
-              inlineMath: [ ['$','$'], ['\\(','\\)'] ]
-            },
-            messageStyle: "none"
-        });
+  /*Global variables for AJAX request and response*/
+var ajax_url = '{{uriHook}}'; /* Environment specific: prod vs dev*/
+var data;
 
-        $('.question-select').hide();
-        $('.question-display').hide();
-        $('.question-edit').hide();
-        $('#delete-quiz-btn').hide();
-        $('#save-question-btn').hide();
-        $('#delete-question-btn').hide();
-        $('#add-question-btn').hide();
-        $('#save-all-changes-btn').hide();
-        load_course_data();
+// An empty sample question
+var empty_question = {
+            answers: [{
+                content: "Correct",
+                isCorrect: true
+            },{
+                content: "Wrong",
+                isCorrect: false
+            },{
+                content: "Wrong",
+                isCorrect: false
+            },{
+                content: "Wrong",
+                isCorrect: false
+            }],
+            concept: "Concept Here",
+            explanation: "Explanation Here",
+            hint: "Hint Here",
+            question: "Question Here"
+        }
+
+// Empty quiz
+var empty_quiz = [empty_question];
+
+$(document).ready(function() {
+    /*MathJax Configuration for inline display
+    and to hide all messages */
+    MathJax.Hub.Config({tex2jax: {
+        inlineMath: [ ['$','$'], ['\\(','\\)'] ]},
+        messageStyle: "none"});
+
+    load_course_data();
+    add_button_events();
+});
+
+/*
+*Makes an AJAX call as soon as the page has loaded
+*to get all course data. Stores response as a
+*global JSON object.
+*/
+function load_course_data() {
+    $.ajax({
+        url: ajax_url
+    }).done(function(response){
+        /*Store the response globally*/
+        data = response;
+        publish_all_quizzes();  
+    }).fail(function(){
+        /*Fail gracefully if no quizzes were loaded*/
+        $(".question_display").append("<div class = 'displayed_concept'>Something went wrong and no quizzes were loaded. Please recheck the class code you entered or report this issue to dev@quizhours.com</div>");
+    });
+}
+
+/*
+* Adds events to the buttons at the bottom corner 
+* to save and delete
+*/
+function add_button_events() {
+    $("#save_all").click(function() {
+        $.ajax({
+            type: "PUT", // Possible cross-browser compatibility issues
+            contentType: "application/json", 
+            url: ajax_url,
+            data: JSON.stringify({"data": data})
+        }).done(function(results){
+            // Hack to quickly propagate changes to qb view
+            location.reload(); // doesn't force reload without cache; possible problem
+        }).fail(function(){
+            alert("Your quiz could not be saved. Please report this issue to dev@quizhours.com");
+        });
+    });
+
+    $("#question_save").click(function() {
+        // Get quiz and question id
+        var quiz_id = $(".quiz_item.active").attr("quiz_id");
+        var question_id = $(".question_list_item.question_active").attr("question_id");
+
+        // Build modified quiz object
+        modified_quiz = {
+            answers: [{
+                content: $("#edit_answer0").val(),
+                isCorrect: $("#isCorrect0").prop("checked")
+            },{
+                content: $("#edit_answer1").val(),
+                isCorrect: $("#isCorrect1").prop("checked")
+            },{
+                content: $("#edit_answer2").val(),
+                isCorrect: $("#isCorrect2").prop("checked")
+            },{
+                content: $("#edit_answer3").val(),
+                isCorrect: $("#isCorrect3").prop("checked")
+            }],
+            concept: $("#edit_concept").val(),
+            explanation: $("#edit_explanation").val(),
+            hint: $("#edit_hint").val(),
+            question: $("#edit_question").val()
+        }
+
+        // Insert modified quiz and reload
+        data.quizzes[quiz_id][question_id] = modified_quiz;
+        publish_question(data.quizzes[quiz_id][question_id]);
+    });
+
+    $("#question_delete").click(function() {
+        // Get quiz and question id
+        var quiz_id = $(".quiz_item.active").attr("quiz_id");
+        var question_id = $(".question_list_item.question_active").attr("question_id");
+
+        //Delete the element and reload
+        data.quizzes[quiz_id].splice(question_id, 1);
+        publish_question_list(data.quizzes[quiz_id]);
+    });
+
+    $("#quiz_delete").click(function() {
+        // Get quiz id
+        var quiz_id = $(".quiz_item.active").attr("quiz_id");
+
+        // Delete this quiz and reload
+        data.quizzes.splice(quiz_id, 1);
+        publish_all_quizzes();
+    });
+}
+
+/*
+*Publishes a list of all available quizzes.
+*Shows details of first quiz by default
+*/
+function publish_all_quizzes() {
+    $(".quiz_list").empty();
+    $(".quiz_list").append("<div class = 'quiz_title'>Quizzes</div>")
+
+    /*Publish all questions*/
+    var num_quizzes = data.quizzes.length;
+    for(var i = 0; i < num_quizzes; i++)
+        $(".quiz_list").append("<div class = 'quiz_item' quiz_id = '"+i+"'> "+(i+1)+"</div>");
+
+    /*If many quizzes present, toggle scrolling*/
+    if($(".quiz_list").height() > $(".quiz_list_wrapper").height())
+        $(".quiz_list").css({"float": "none", "white-space": "nowrap", "-ms-overflow-style" : "-ms-autohiding-scrollbar;", "overflow-x": "auto"});
+
+    /*Displays data for the first quiz by default*/
+    $(".quiz_item").first().addClass("active");
+    publish_question_list(data.quizzes[0]);
+
+    /*On clicking a quiz, display question list of that quiz*/
+    $(".quiz_item").click(function() {
+        /*Update CSS styling*/
+        $(".quiz_item").removeClass("active");
+        $(this).addClass("active");
+
+        var quiz_id = $(this).attr("quiz_id");
+        publish_question_list(data.quizzes[quiz_id]);
+    });
+
+    // Button to add a new quiz
+    $(".quiz_list").append("<div id = 'add_quiz'>+</div>")
+    $("#add_quiz").click(function() {
+        // Add an empty quiz, and reload view
+        data.quizzes.push(empty_quiz);
+        publish_all_quizzes();
+    });
+}
+
+/*
+*Publishes list of all questions in the quiz_data variable
+*/
+function publish_question_list(quiz_data) {
+    $(".question_list").empty();
+
+    $.each(quiz_data, function(i, question) {
+        $(".question_list").append("<div class = 'question_list_item' question_id = '"+i+"'>"+question.concept+"</div>");
+    });
+
+    /*Show first question by default*/
+    $(".question_list_item").first().addClass("question_active");
+    publish_question(quiz_data[0]);
+
+    // Add option to create new question
+    $(".question_list").append("<div id = 'add_question'>+</div>")
+    $("#add_question").click(function() {
+        var quiz_id = $(".quiz_item.active").attr("quiz_id");
+
+        // Add an empty question, and reload view
+        data.quizzes[quiz_id].push(empty_question);
+        publish_question_list(data.quizzes[quiz_id]);
+    });
+
+    /*On clicking a question, display it*/
+    $(".question_list_item").click(function() {
+        /*Update CSS styling*/
+        $(".question_list_item").removeClass("question_active");
+        $(this).addClass("question_active")
+        
+        var question_id = $(this).attr("question_id");
+        publish_question(quiz_data[question_id]);
+    });
+}
+
+function publish_question(question_data) {
+    /*Clear current content*/
+    $(".question_display").empty();
+
+    /*Publish the question*/
+    $(".question_display").append("<div class = 'displayed_concept'>"+question_data.concept+"</div>");
+    $(".question_display").append("<div class = 'displayed_question'>"+question_data.question+"</div>");
+    $(".question_display").append("<div class = 'answers_container'></div>");
+    $(".question_display").append("<div class = 'hints'></div>")
+    $(".question_display").append("<div class = 'edit_container'></div>");
+
+    /*Publish each of the answers*/
+    $.each(question_data.answers, function(i, answer) {
+        $(".answers_container").append("<div class = 'answers unattempted' answer_id = '"+ i +"'>"+answer.content+"</div>");
+    });
+
+    refresh_mathjax();
+
+    $(".answers").click(function() {
+        /*Remove CSS styling on any old attempts*/
+        $(".answers").removeClass().addClass("answers unattempted");
+
+        var answer_id = $(this).attr("answer_id");
+
+        /*Clear any current hints*/
+        $(".hints").empty();
+
+        /*
+         * Add the processing styling to the selected div.
+         * Continue processing answer after a timeout of
+         * 1000 milliseconds.
+         */
+        $(this).removeClass("unattempted").addClass("processing");
+        setTimeout(function(){
+            /*If answer is right, give explanation
+              Else, give hint */
+            if(question_data.answers[answer_id].isCorrect) {
+                $("div[answer_id = "+answer_id+"]").removeClass("processing").addClass("correct");
+                $(".hints").append("<div> Explanation: "+question_data.explanation+"</div>");
+            }
+            else {
+                $("div[answer_id = "+answer_id+"]").removeClass("processing").addClass("wrong");
+                $(".hints").append("<div> Hint: "+question_data.hint+"</div>");
+            }
+
+            refresh_mathjax();
+        }, 1000);
     });
     
-    function refresh_mathjax() {
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-    }
-    
-    // Convenience function for parsing int
-    function pInt(numStr){
-      return parseInt(numStr, 10);
-    }
+    build_edit_form(question_data);
+}
 
-    function clearQuestionDisplay(){
-      var questionDisplay = $('.question-display');
-      questionDisplay.find('h3').html("");
-      questionDisplay.find('p').html("");
-      questionDisplay.find('ul').html("");
-      questionDisplay.find('.hint-box').html("");
-      questionDisplay.find('.explanation-box').html("");
-    }
+function build_edit_form(question_data) {
+    $(".edit_container").append("<input class = 'major_edit' id = 'edit_concept' value = '" + question_data.concept+ "'></input>");
+    $(".edit_container").append("<input class = 'major_edit' id = 'edit_question' value = '" + question_data.question+ "'></input>");
 
-    function clearQuestionEdit(){
-      var questionEdit = $('.question-edit');
-      questionEdit.html("");
-      questionEdit.append('<h2>Edit Question:</h2>');
-      questionEdit.append('<label>Concept: <input type="text" id="concept-edit" /></label><br />');
-      questionEdit.append('<label>Question:<br />');
-      questionEdit.append('<textarea id="question-text-edit" /></textarea></label>');
-      questionEdit.append('<div class="answer-edit-box"></div>');
-      questionEdit.append('<label>Hint:<br />');
-      questionEdit.append('<textarea id="hint-edit"></textarea></label><br />');
-      questionEdit.append('<label>Explanation:<br />');
-      questionEdit.append('<textarea id="explanation-edit"></textarea></label>');
+    $(".edit_container").append("<div class = 'answers_edit_container'><input class = 'answers_edit' id = 'edit_answer0' value = '" + question_data.answers[0].content+ "'></input>");
+    $(".edit_container").append("<input class = 'answers_edit' id = 'edit_answer1' value = '" + question_data.answers[1].content+ "'></input>");
+    $(".edit_container").append("<input class = 'answers_edit' id = 'edit_answer2' value = '" + question_data.answers[2].content+ "'></input>");
+    $(".edit_container").append("<input class = 'answers_edit' id = 'edit_answer3' value = '" + question_data.answers[3].content+ "'></input></div>");
+
+    // Build the radio buttons for the correct answer
+    $(".edit_container").append("<form id = 'correct_answers'></form>");
+    for(var i = 0; i < 4; i++) {
+        var radio_button = "<input type = 'radio' name = 'isCorrect' class = 'radio_button' id = 'isCorrect" + i +"' ";
+        if(question_data.answers[i].isCorrect) radio_button += "checked";
+        radio_button += ">";
+
+        $("#correct_answers").append(radio_button);
     }
 
-    /* 
-     * Makes an AJAX call as soon as the page has loaded to get all course data.
-     * Stores response as a global JSON object.
-     */
-     function load_course_data() {
-       $.ajax({ 
-        url: ajax_url 
-       }).done(function(response){
-         /* Store the response globally */
-         data = response;
-         publish_all_quizzes();
-         register_event_listeners();
-       }).fail(function(){
-         $(".question_display").append("<div class = 'displayed_concept'>Something went wrong and no quizzes were loaded. Please report this issue to dev@quizhours.com</div>");
-       });
-     }
-     
-     /*
-      * Publishes a list of all available quizzes.
-      */
-      function publish_all_quizzes() {
-        var quizzes = data.quizzes;
-        var quizSelect = $('.quiz-select');
-        quizSelect.append('<option value="default">Select a quiz...</option>');
-        $.each(quizzes, function(index, value){
-              quizSelect.append('<option value="'+index+'">'+(index+1)+'</option>');
-        });
-      }
-      
-      function register_event_listeners(){
-        // EL for selecting a different quiz
-        $('.quiz-select').change(function(e){
-            var index = pInt($(this).val());
-            if(index !== 'default'){
-              var questionList = data.quizzes[index];
-              var questionSelect = $('.question-select');
-              questionSelect.show();
-              questionSelect.html("<option value=\"default\">Select a question...</option>");
-              $.each(questionList, function(index, question){
-                  questionSelect.append('<option value="'+index+'">'+question.concept+'</option>');
-              });
-              $('#delete-quiz-btn').show();
-              $('#add-question-btn').show();
-            }
-        });
-        
-        // EL for selecting a different question
-        $('.question-select').change(function(e){
-            var index = pInt($(this).val());
-            var quizIndex = pInt($('.quiz-select').val());
-            if(index !== 'default'){
-              var questionDisplay = $('.question-display');
-              var questionEdit = $('.question-edit');
-              var questionList = data.quizzes[quizIndex];
-              var question = questionList[index];
-              
-              // Clear question display view
-              clearQuestionDisplay();
+    $(".edit_container").append("<input class = 'major_edit' id = 'edit_explanation' value = '" + question_data.explanation+ "'></input>");
+    $(".edit_container").append("<input class = 'major_edit' id = 'edit_hint' value = '" + question_data.hint+ "'></input>");
+}
 
-              // Render question display view
-              questionDisplay.find('h3').html(question.concept);
-              questionDisplay.find('p').html(question.question);
-              var answersDisplay = questionDisplay.find('ul');
-              //answersDisplay.html("");
-              $.each(question.answers, function(index, answer){
-                  answersDisplay.append('<li style="list-style-type: none;" class="answer">'+answer.content+'</li>');
-              });
-              questionDisplay.find('.hint-box').html(question.hint);
-              questionDisplay.find('.explanation-box').html(question.explanation);
-              refresh_mathjax(); // Refresh mathjax BEFORE rendering question edit view
-              
-              // Clear question edit view
-              clearQuestionEdit();
-
-              // Render question edit view
-              questionEdit.find('#concept-edit').val(question.concept);
-              questionEdit.find('#question-text-edit').val(question.question);
-              var answersEdit = questionEdit.find('.answer-edit-box');
-              answersEdit.html("");
-              $.each(question.answers, function(index, answer){
-                  answersEdit.append('<label>Answer '+(index+1)+': <input type="text" class="answer-edit" value="'+answer.content+'" />'+
-                    '<input type="checkbox" class="answer-iscorrect-edit" value="'+index+'" '+(answer.isCorrect ? "checked='checked'" : "")+'/></label><br />');
-              });
-              questionEdit.find('#hint-edit').val(question.hint);
-              questionEdit.find('#explanation-edit').val(question.explanation);
-
-              // Display views and controls
-              $('.question-display').show();
-              $('.question-edit').show();
-              $('#save-question-btn').show();
-              $('#delete-question-btn').show();
-              
-            }
-        });
-        
-        // EL for saving a question locally
-        $('#save-question-btn').click(function(e){
-            e.preventDefault();
-            var quizIndex = pInt($('.quiz-select').val());
-            var questionIndex = pInt($('.question-select').val());
-            var questionList = data.quizzes[quizIndex];
-            var question = questionList[questionIndex];
-            
-            question.concept = $('#concept-edit').val();
-            question.question = $('#question-text-edit').val();
-            $('.answer-edit').each(function(index){
-                question.answers[index]['content'] = $(this).val();
-                question.answers[index]['isCorrect'] = false;
-            });
-            $('.answer-iscorrect-edit:checked').each(function(index){
-                question.answers[pInt($(this).val())]['isCorrect'] = true;
-            });
-            question.hint = $('#hint-edit').val();
-            question.explanation = $('#explanation-edit').val();
-            
-            $('.question-select > option[value='+questionIndex+']').html(question.concept);
-            data.quizzes[quizIndex][questionIndex] = question;
-            $('#save-all-changes-btn').show();
-        });
-        
-        // EL for deleting a question locally
-        $('#delete-question-btn').click(function(e){
-            e.preventDefault();
-            var quizIndex = pInt($('.quiz-select').val());
-            var questionIndex = pInt($('.question-select').val());
-            var questionList = data.quizzes[quizIndex];
-            //var newQuestionIndex = (questionIndex + 1) % ($('.question-select > option').size() - 1);
-            $('.question-select > option[value='+questionIndex+']').remove();
-            clearQuestionDisplay();
-            $('.question-edit').html("");
-            $('#save-question-btn').hide();
-            $('#delete-question-btn').hide();
-            $('#save-all-changes-btn').show();
-            data.quizzes[quizIndex][questionIndex] = null;
-        });
-        
-        // EL for deleting a quiz locally
-        $('#delete-quiz-btn').click(function(e){
-            e.preventDefault();
-            var quizIndex = pInt($('.quiz-select').val());
-            var numQuestions = data.quizzes[quizIndex].length;
-            for(var i = 0; i < numQuestions; i++){
-              $('.question-select > option[value='+i+']').remove();
-            }
-            $('.quiz-select > option[value='+quizIndex+']').remove();
-            clearQuestionDisplay();
-            $('.question-edit').html("");
-            $('#save-question-btn').hide();
-            $('#delete-question-btn').hide();
-            $('.question-select').hide();
-            $('#add-question-btn').hide();
-            $('#save-all-changes-btn').show();
-            data.quizzes[quizIndex] = null;
-        });
-        
-        // EL for adding a quiz locally
-        $('#add-quiz-btn').click(function(e){
-            e.preventDefault();
-            var newQuizIndex = $('.quiz-select').val();
-            newQuizIndex = (newQuizIndex === 'default' ? 0 : pInt(newQuizIndex)+1);
-            data.quizzes.splice(newQuizIndex, 0, []);
-            console.log(data.quizzes);
-            $('.quiz-select > option').remove();
-            $('#save-all-changes-btn').show();
-            publish_all_quizzes();
-        });
-
-        // EL for adding a question locally
-        $('#add-question-btn').click(function(e){
-            e.preventDefault();
-            var quizIndex = pInt($('.quiz-select').val());
-            var newQuestionIndex = $('.question-select').val();
-            newQuestionIndex = (newQuestionIndex === 'default' ? 0 : pInt(newQuestionIndex)+1);
-            var newQuestion = {};
-            newQuestion.concept = "New Question";
-            newQuestion.question = "";
-            newQuestion.answers = [{"content": "a", "isCorrect": true},
-                                    {"content": "b", "isCorrect": false},
-                                    {"content": "c", "isCorrect": false},
-                                    {"content": "d", "isCorrect": false}];
-            newQuestion.hint = "";
-            newQuestion.explanation = "";
-            data.quizzes[quizIndex].splice(newQuestionIndex, 0, newQuestion);
-            $('.quiz-select').change(); // triggers re-rendering of question-select dropdown
-            $('.question-select').val(newQuestionIndex);
-            $('.question-select').change();
-        });
-
-        // Commit all local changes by sending them to the server
-        $('#save-all-changes-btn').click(function(e){
-            e.preventDefault();
-
-            // Scrub out all deleted questions and quizzes (marked with null)
-            var newQuizzes = [];
-            $.each(data.quizzes, function(index, quiz){
-              if(quiz !== null){
-                console.log(quiz);
-                var newQuestions = [];
-                $.each(quiz, function(index, question){
-                  if(question !== null){
-                    console.log(question);
-                    newQuestions.push(question);
-                  }
-                });
-                quiz = newQuestions;
-                newQuizzes.push(quiz);
-              }
-            });
-            data.quizzes = newQuizzes;
-            console.log(data);
-
-            // Send request to server
-            $.ajax({
-                type: "PUT", // Possible cross-browser compatibility issues
-                contentType: "application/json", 
-                url: ajax_url,
-                data: JSON.stringify({"data": data})
-            }).done(function(results){
-                // Hack to quickly propagate changes to qb view
-                location.reload(); // doesn't force reload without cache; possible problem
-            }).fail(function(){
-                $(".question_display").append("<div class = 'displayed_concept'>Your quiz could not be saved. Please report this issue to dev@quizhours.com</div>");
-            });
-        });
-      }
+function refresh_mathjax() {
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+}
 })();

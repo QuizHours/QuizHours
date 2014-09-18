@@ -1,0 +1,284 @@
+body {
+	font-family: 'Calibri Light', serif;
+	font-size: 18px;
+	line-height: 26px;
+}
+
+.header {
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	width: 100%;
+	height: 52px;
+
+	background-color: #14314F;
+}
+
+.logo {
+	width: 130px;
+	padding: 13px 23px;
+
+	font-size: 32px;
+	color: #FFA500;
+}
+
+.active {
+	color: #FFA500 !important;
+}
+
+.quiz_list_wrapper {
+	position: absolute;
+	top: 0;
+	right: 0;
+
+	width: 100%;
+	height: 42px;
+	/*Padding left is larger 
+	  than the width of the logo*/
+	box-sizing: border-box;
+	padding: 14px 14px 0 190px;
+}
+
+.quiz_list {
+	float: right;
+}
+
+.quiz_item {
+	display: inline;
+	padding: 0 7px;
+
+	font-size: 26px;
+	color: #FFF;
+}
+
+#add_quiz {
+	display: inline;
+	padding: 0 7px;
+
+	font-size: 26px;
+	color: #FFF;
+}
+
+.quiz_title {
+	display: inline;
+	padding: 0 5px;
+
+	font-size: 26px;
+	color: #FFA500;
+}
+
+.quiz_item:hover {
+	cursor: pointer;
+	color: #FFA500;
+}
+
+#add_quiz:hover {
+	cursor: pointer;
+	color: #FFA500;
+}
+
+.sidebar {
+	position: absolute;
+	top: 52px;
+	left: 0;
+	bottom: 0;
+
+	width: 190px;
+
+	background-color: #CFE0F4;
+	overflow: auto;
+	-ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.question_list_item {
+	box-sizing: border-box;
+	padding: 10px 15px;
+
+	color: #14314F;
+}
+
+#add_question {
+	box-sizing: border-box;
+	padding: 5px 0;
+
+	font-size: 25px;
+	text-align: center;
+	color: #14314F;
+}
+
+.question_list_item:hover {
+	background-color: #4574A2;
+	color: #FFF;
+	cursor: pointer;
+}
+
+#add_question:hover {
+	background-color: #4574A2;
+	color: #FFF;
+	cursor: pointer;
+}
+
+.question_active {
+	background-color: #4574A2;
+	color: #FFF;
+}
+
+.question_display {
+	position: absolute;
+	top: 52px;   /*Height of header*/
+	left: 190px; /*Width of sidebar*/
+	right: 0;
+	bottom: 0;
+
+	color: #333;
+}
+
+.displayed_concept {
+	text-align: center;
+	font-size: 36px;
+	font-weight: 500;
+	line-height: 40px;
+
+	padding: 20px 20px 0 20px;
+}
+
+.displayed_question {
+	text-align: center;
+	padding: 15px 20px;
+
+	font-size: 24px;
+	line-height: 34px;
+}
+
+.answers_container {
+	margin: auto;
+	max-width: 685px;
+}
+
+.answers {
+	border: 1px solid #CCC;
+	border-radius: 5px;
+	padding: 10px;
+	margin: 5px 10px;
+
+	max-width: 300px;
+	display: inline-block;
+	width: 100%;
+
+	text-align: center;
+	font-size: 22px;
+	line-height: 20px;
+}
+
+/*
+ * Breakpoint to ensure that answers are initially 2x2
+ * but then stack when the screen is small.
+ */
+@media(max-width: 875px) {
+	.answers_container{}
+	.answers {
+		display: block;
+		margin: 5px auto;
+	}
+}
+.unattempted:hover {
+	border-color: #ADADAD;
+	background-color: #EBEBEB;
+	cursor: pointer;
+}
+
+.wrong {
+	background-color: #D9534F;
+	border-color: #D43F3A;
+	color: #FFF;
+}
+
+.correct {
+	background-color: #5CB85C;
+	border-color: #4CAE4C;
+	color: #FFF;
+}
+
+.processing {
+	background-color: #F0AD4E;
+	border-color: #EEA236;
+	color: #FFF;
+}
+
+.hints {
+	clear: both;
+
+	padding: 10px 20px;
+
+	font-size: 24px;
+	line-height: 34px;
+}
+
+.clearfix:after {
+  content:"";
+  display:table;
+  clear:both;
+}
+
+.edit_container {
+	margin: 10px;
+}
+
+.major_edit {
+	display: block;
+
+	font-size: 24px;
+	line-height: 30px;
+
+	width: 100%;
+	max-width: 600px;
+
+	margin: 5px auto;
+	text-align: center;
+}
+
+.answers_edit {
+	margin: 5px 10px;
+
+	max-width: 200px;
+	display: inline-block;
+	width: 100%;
+	float: left;
+
+	font-size: 22px;
+	line-height: 20px;
+	text-align: center;
+}
+
+.buttons_container {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+}
+
+.button {
+	float: left;
+	margin: 0 5px;
+	padding: 5px 10px;
+
+	background-color: #14314F;
+	color: #FFF;
+
+	border: 1px solid black;
+	border-radius: 20px;
+}
+
+.button:hover {
+	cursor: pointer;
+	color: #FFA500;
+}
+
+#correct_answers {
+	padding: 0 70px;
+}
+
+.radio_button {
+	width: 100%;
+	max-width: 225px;
+}

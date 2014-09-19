@@ -58,11 +58,13 @@ router.route('/courses/:classcode')
             collection.find({"classcode": req.params.classcode}).toArray(function(findErr, results){
                 if(findErr) {
                   res.send(findErr);
-                } else {
+                } else if(results === null){
                   results = results[0];
                   delete results.password;
                   delete results._id;
                   res.json(results);
+                } else {
+                  res.json({});
                 }
                 db.close();
             });
@@ -129,11 +131,13 @@ router.route('/feedback')
           collection.find().toArray(function(findErr, results){
               if(findErr) {
                 res.send(findErr);
-              } else {
+              } else if(results !== null){
                 for(var i = 0; i < results.length; i++){
                   delete results[i]._id;
                 }
                 res.json(results);
+              } else {
+                res.json([]);
               }
               db.close();
           });

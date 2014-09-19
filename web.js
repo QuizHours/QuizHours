@@ -58,7 +58,7 @@ router.route('/courses/:classcode')
             collection.find({"classcode": req.params.classcode}).toArray(function(findErr, results){
                 if(findErr) {
                   res.send(findErr);
-                } else if(results === null){
+                } else if(results.length > 0){
                   results = results[0];
                   delete results.password;
                   delete results._id;
@@ -131,7 +131,7 @@ router.route('/feedback')
           collection.find().toArray(function(findErr, results){
               if(findErr) {
                 res.send(findErr);
-              } else if(results !== null){
+              } else if(results.length > 0){
                 for(var i = 0; i < results.length; i++){
                   delete results[i]._id;
                 }

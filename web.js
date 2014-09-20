@@ -1,6 +1,7 @@
 var WebSocketServer = require('ws').Server,
   MongoClient = require('mongodb').MongoClient,
   bodyParser = require('body-parser'),
+  cookieParser = require('cookie-parser'),
   fs = require('fs'),
 	http = require('http'),
 	path = require('path'),
@@ -16,10 +17,10 @@ var WebSocketServer = require('ws').Server,
   
 MongoClient.connect(mongoUri, function(err, db){
   if(err) throw err;
-  //db.collection(mongoCourseCollectionName).drop(); //clear collection for time being while testing
+  db.collection(mongoCourseCollectionName).drop(); //clear collection for time being while testing
   db.collection(mongoFeedbackCollectionName).drop(); //clear collection for time being while testing
-  /*var collection = db.collection(mongoCourseCollectionName);
-  var filename = 'course-template1.json'; // reset the demo file on each server restart
+  var collection = db.collection(mongoCourseCollectionName);
+  var filename = 'course-template2.json'; // reset the demo file on each server restart
   fs.readFile(path.join(process.cwd(), '/data/courses/'+filename), 'utf8', function(err, data){
     var initialCourse;
     if(err){
@@ -35,7 +36,7 @@ MongoClient.connect(mongoUri, function(err, db){
           db.close();
       });
     });
-  });*/
+  });
 });
 
 function compileHandlebars(inputString, context){
@@ -168,7 +169,7 @@ router.route('/feedback')
 // "1mb" is a hack to overcome Error 413 "Entity too large"
 // Is there a better solution?
 app.use(bodyParser.json({limit:'1mb'}));
-
+app.use(cookieParser());
 app.use('/api', router);
 
 // Every extension handled by app.VERB is functionality for the webapp

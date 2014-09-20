@@ -10,14 +10,16 @@ var WebSocketServer = require('ws').Server,
 	port = process.env.PORT || 5000,
   courseUriBase = (port == 5000 ? "http://localhost:5000" : "http://www.quizhours.com"),
 	mongoUri = process.env.MONGOHQ_URL || 'mongodb://localhost:27017',
-	mongoName = 'courses',
+	mongoCourseCollectionName = 'courses',
+  mongoFeedbackCollectionName = 'feedback',
   router = express.Router();
   
 MongoClient.connect(mongoUri, function(err, db){
   if(err) throw err;
-  db.collection(mongoName).drop(); //clear collection for time being while testing
-  var collection = db.collection(mongoName);
-  var filename = 'course-template2.json';
+  //db.collection(mongoCourseCollectionName).drop(); //clear collection for time being while testing
+  db.collection(mongoFeedbackCollectionName).drop(); //clear collection for time being while testing
+  /*var collection = db.collection(mongoCourseCollectionName);
+  var filename = 'course-template1.json'; // reset the demo file on each server restart
   fs.readFile(path.join(process.cwd(), '/data/courses/'+filename), 'utf8', function(err, data){
     var initialCourse;
     if(err){
@@ -33,7 +35,7 @@ MongoClient.connect(mongoUri, function(err, db){
           db.close();
       });
     });
-  });
+  });*/
 });
 
 function compileHandlebars(inputString, context){
@@ -48,24 +50,27 @@ router.route('/courses/:classcode')
 
   .get(function(req, res){
     //retrieve requested file from mongodb
-    MongoClient.connect(mongoUri, function(conErr, db){
-        if(conErr) {
-          res.send(conErr);
-          throw conErr;
-        }
-        var collection = db.collection(mongoName);
-        collection.find({"classcode": req.params.classcode}).toArray(function(findErr, results){
-            if(findErr) {
-              res.send(findErr);
-              throw findErr;
-            }
-            results = results[0];
-            delete results.password;
-            delete results._id;
-            res.json(results);
-            db.close();
-        });
-    });
+    if(typeof(req.params.classcode) !== 'undefined'){
+      MongoClient.connect(mongoUri, function(conErr, db){
+          if(conErr) {
+          } else {
+            var collection = db.collection(mongoCourseCollectionName);
+            collection.find({"classcode": req.params.classcode}).toArray(function(findErr, results){
+                if(findErr) {
+                  res.send(findErr);
+                } else if(results.length > 0){
+                  results = results[0];
+                  delete results.password;
+                  delete results._id;
+                  res.json(results);
+                } else {
+                  res.json({});
+                }
+                db.close();
+            });
+          }
+      });
+    }
   })
   
   //create new file in mongodb
@@ -77,7 +82,7 @@ router.route('/courses/:classcode')
             res.send(conErr);
             throw conErr;
           }
-          var collection = db.collection(mongoName);
+          var collection = db.collection(mongoCourseCollectionName);
           collection.insert(courseData, function(insertErr, docs){
               if(insertErr){
                 res.send(insertErr);
@@ -92,33 +97,77 @@ router.route('/courses/:classcode')
   //update file in mongodb
   .put(function(req, res){
       var courseData = req.body.data;
-      MongoClient.connect(mongoUri, function(conErr, db){
-          if(conErr) {
-            res.send(conErr);
-            throw conErr;
-          }
-          var collection = db.collection(mongoName);
-          // We use "$set" when passing in data to prevent overwriting password
-          collection.findAndModify({"classcode": req.params.classcode}, 
-                                   [['_id', 'asc']],
-                                   {"$set": courseData}, 
-                                   {},
-          function(err, object){
-              if(err){
-                res.send(err);
+      if(typeof(req.params.classcode) !== 'undefined' && typeof(courseData) !== 'undefined'){
+        MongoClient.connect(mongoUri, function(conErr, db){
+            if(conErr) {
+            } else {
+              var collection = db.collection(mongoCourseCollectionName);
+              // We use "$set" when passing in data to prevent overwriting password
+              collection.findAndModify({"classcode": req.params.classcode}, 
+                                       [['_id', 'asc']],
+                                       {"$set": courseData}, 
+                                       {},
+              function(err, object){
+                  if(err){
+                    res.send(err);
+                  } else {
+                    res.send(object); // NOTE: passes back pre-modification file!
+                  }
+                  db.close();
+              });
+            }
+        });
+      }
+  });
+
+router.route('/feedback')
+
+  .get(function(req, res){
+    //retrieve requested file from mongodb
+    MongoClient.connect(mongoUri, function(conErr, db){
+        if(conErr) {
+        } else {
+          var collection = db.collection(mongoFeedbackCollectionName);
+          collection.find().toArray(function(findErr, results){
+              if(findErr) {
+                res.send(findErr);
+              } else if(results.length > 0){
+                for(var i = 0; i < results.length; i++){
+                  delete results[i]._id;
+                }
+                res.json(results);
               } else {
-                res.send(object); // NOTE: passes back pre-modification file!
+                res.json([]);
               }
               db.close();
           });
+        }
+    });
+  })
+
+  .post(function(req, res){
+    var feedback = req.body.feedback;
+    if(typeof(req.body.feedback) !== 'undefined'){
+      MongoClient.connect(mongoUri, function(conErr, db){
+        if(conErr){
+        } else {
+          var collection = db.collection(mongoFeedbackCollectionName);
+          collection.insert(feedback, function(insertErr, docs){
+            if(insertErr){
+              res.json({"success": false});
+            } else {
+              res.json({"success": true});
+            }
+            db.close();
+          });
+        }
       });
+    }
   });
-  
-// "50mb" is a hack to overcome Error 413 "Entity too large"
+
+// "1mb" is a hack to overcome Error 413 "Entity too large"
 // Is there a better solution?
-//app.use(bodyParser.urlencoded({extended:true, limit:'50mb'}));
-app.use(bodyParser.json({limit:'50mb'}));
-//app.use(bodyParser({limit:'50mb'}));
+app.use(bodyParser.json({limit:'1mb'}));
 
 app.use('/api', router);
 

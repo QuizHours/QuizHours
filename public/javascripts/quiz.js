@@ -48,7 +48,7 @@ function publish_all_quizzes() {
 
 	/*Displays data for the first quiz by default*/
 	$(".quiz_item").first().addClass("active");
-	publish_question_list(data.quizzes[0]);
+	publish_question_list(data.quizzes[0].questions);
 
 	/*On clicking a quiz, display question list of that quiz*/
 	$(".quiz_item").click(function() {
@@ -57,7 +57,7 @@ function publish_all_quizzes() {
 		$(this).addClass("active");
 
 		var quiz_id = $(this).attr("quiz_id");
-		publish_question_list(data.quizzes[quiz_id]);
+		publish_question_list(data.quizzes[quiz_id].questions);
 	});
 }
 

@@ -1,7 +1,9 @@
+var data;
+
 (function(){
   /*Global variables for AJAX request and response*/
 var ajax_url = '{{uriHook}}'; /* Environment specific: prod vs dev*/
-var data;
+// var data;
 
 // An empty sample question
 var empty_question = {
@@ -25,7 +27,10 @@ var empty_question = {
         }
 
 // Empty quiz
-var empty_quiz = [empty_question];
+var empty_quiz = {
+        isPublished: false,
+        questions: [empty_question]
+    };
 
 $(document).ready(function() {
     /*MathJax Configuration for inline display
@@ -102,8 +107,8 @@ function add_button_events() {
         }
 
         // Insert modified quiz and reload
-        data.quizzes[quiz_id][question_id] = modified_quiz;
-        publish_question(data.quizzes[quiz_id][question_id]);
+        data.quizzes[quiz_id].questions[question_id] = modified_quiz;
+        publish_question(data.quizzes[quiz_id].questions[question_id]);
     });
 
     $("#question_delete").click(function() {
@@ -112,8 +117,8 @@ function add_button_events() {
         var question_id = $(".question_list_item.question_active").attr("question_id");
 
         //Delete the element and reload
-        data.quizzes[quiz_id].splice(question_id, 1);
-        publish_question_list(data.quizzes[quiz_id]);
+        data.quizzes[quiz_id].questions.splice(question_id, 1);
+        publish_question_list(data.quizzes[quiz_id].questions);
     });
 
     $("#quiz_delete").click(function() {
@@ -145,7 +150,7 @@ function publish_all_quizzes() {
 
     /*Displays data for the first quiz by default*/
     $(".quiz_item").first().addClass("active");
-    publish_question_list(data.quizzes[0]);
+    publish_question_list(data.quizzes[0].questions);
 
     /*On clicking a quiz, display question list of that quiz*/
     $(".quiz_item").click(function() {
@@ -154,7 +159,7 @@ function publish_all_quizzes() {
         $(this).addClass("active");
 
         var quiz_id = $(this).attr("quiz_id");
-        publish_question_list(data.quizzes[quiz_id]);
+        publish_question_list(data.quizzes[quiz_id].questions);
     });
 
     // Button to add a new quiz
@@ -186,8 +191,23 @@ function publish_question_list(quiz_data) {
         var quiz_id = $(".quiz_item.active").attr("quiz_id");
 
         // Add an empty question, and reload view
-        data.quizzes[quiz_id].push(empty_question);
-        publish_question_list(data.quizzes[quiz_id]);
+        data.quizzes[quiz_id].questions.push(empty_question);
+        publish_question_list(data.quizzes[quiz_id].questions);
+    });
+
+    // Add option to publish this quiz
+    var quiz_id = $(".quiz_item.active").attr("quiz_id");
+    var label = data.quizzes[quiz_id].isPublished ? "Hide Quiz" : "Publish Quiz";
+    $(".buttons_container").append("<div class = 'button' id = 'publish_quiz'>"+label+"</div>")
+
+    // If a quiz is being published, then toggle the published value
+    $("#publish_quiz").click(function() {
+        $("#publish_quiz").remove();
+        var quiz_id = $(".quiz_item.active").attr("quiz_id");
+
+        // Toggle whether the quiz is published and reload
+        data.quizzes[quiz_id].isPublished = !data.quizzes[quiz_id].isPublished;
+        publish_question_list(data.quizzes[quiz_id].questions);
     });
 
     /*On clicking a question, display it*/

@@ -196,6 +196,7 @@ function publish_question_list(quiz_data) {
     });
 
     // Add option to publish this quiz
+    $("#publish_quiz").remove();
     var quiz_id = $(".quiz_item.active").attr("quiz_id");
     var label = data.quizzes[quiz_id].isPublished ? "Hide Quiz" : "Publish Quiz";
     $(".buttons_container").append("<div class = 'button' id = 'publish_quiz'>"+label+"</div>")

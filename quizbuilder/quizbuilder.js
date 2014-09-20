@@ -1,9 +1,7 @@
-var data;
-
 (function(){
   /*Global variables for AJAX request and response*/
 var ajax_url = '{{uriHook}}'; /* Environment specific: prod vs dev*/
-// var data;
+var data;
 
 // An empty sample question
 var empty_question = {
@@ -108,7 +106,7 @@ function add_button_events() {
 
         // Insert modified quiz and reload
         data.quizzes[quiz_id].questions[question_id] = modified_quiz;
-        publish_question(data.quizzes[quiz_id].questions[question_id]);
+        publish_question_list(data.quizzes[quiz_id].questions);
     });
 
     $("#question_delete").click(function() {
@@ -166,7 +164,8 @@ function publish_all_quizzes() {
     $(".quiz_list").append("<div id = 'add_quiz'>+</div>")
     $("#add_quiz").click(function() {
         // Add an empty quiz, and reload view
-        data.quizzes.push(empty_quiz);
+        var new_empty_quiz = jQuery.extend(true, {}, empty_quiz); //Deep copy object
+        data.quizzes.push(new_empty_quiz);
         publish_all_quizzes();
     });
 }
@@ -191,7 +190,8 @@ function publish_question_list(quiz_data) {
         var quiz_id = $(".quiz_item.active").attr("quiz_id");
 
         // Add an empty question, and reload view
-        data.quizzes[quiz_id].questions.push(empty_question);
+        var new_empty_question = jQuery.extend(true, {}, empty_question); //Create deep copy
+        data.quizzes[quiz_id].questions.push(new_empty_question);
         publish_question_list(data.quizzes[quiz_id].questions);
     });
 

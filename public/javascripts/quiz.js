@@ -39,8 +39,12 @@ function publish_all_quizzes() {
 
 	/*Publish all questions*/
 	var num_quizzes = data.quizzes.length;
-	for(var i = 0; i < num_quizzes; i++)
-		$(".quiz_list").append("<div class = 'quiz_item' quiz_id = '"+i+"'> "+(i+1)+"</div>");
+	for(var i = 0, quiz_number = 0; i < num_quizzes; i++)
+		//Display only published quizzes
+		if(data.quizzes[i].isPublished) {
+			quiz_number++;
+			$(".quiz_list").append("<div class = 'quiz_item' quiz_id = '"+i+"'> "+quiz_number+"</div>");
+		}
 
 	/*If many quizzes present, toggle scrolling*/
 	if($(".quiz_list").height() > $(".quiz_list_wrapper").height())

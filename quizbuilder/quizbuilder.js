@@ -260,11 +260,11 @@ function publish_question(question_data) {
               Else, give hint */
             if(question_data.answers[answer_id].isCorrect) {
                 $("div[answer_id = "+answer_id+"]").removeClass("processing").addClass("correct");
-                $(".hints").append("<div> Explanation: "+question_data.explanation+"</div>");
+                $(".hints").append("<div>"+question_data.explanation+"</div>");
             }
             else {
                 $("div[answer_id = "+answer_id+"]").removeClass("processing").addClass("wrong");
-                $(".hints").append("<div> Hint: "+question_data.hint+"</div>");
+                $(".hints").append("<div>"+question_data.hint+"</div>");
             }
 
             refresh_mathjax();

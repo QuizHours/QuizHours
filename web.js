@@ -17,7 +17,7 @@ var WebSocketServer = require('ws').Server,
   
 MongoClient.connect(mongoUri, function(err, db){
   if(err) throw err;
-  db.collection(mongoCourseCollectionName).drop(); //clear collection for time being while testing
+  /*db.collection(mongoCourseCollectionName).drop(); //clear collection for time being while testing
   db.collection(mongoFeedbackCollectionName).drop(); //clear collection for time being while testing
   var collection = db.collection(mongoCourseCollectionName);
   var filename = 'course-template2.json'; // reset the demo file on each server restart
@@ -36,7 +36,7 @@ MongoClient.connect(mongoUri, function(err, db){
           db.close();
       });
     });
-  });
+  });*/
 });
 
 function compileHandlebars(inputString, context){

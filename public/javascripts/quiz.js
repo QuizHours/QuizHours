@@ -39,8 +39,12 @@ function publish_all_quizzes() {
 
 	/*Publish all questions*/
 	var num_quizzes = data.quizzes.length;
-	for(var i = 0; i < num_quizzes; i++)
-		$(".quiz_list").append("<div class = 'quiz_item' quiz_id = '"+i+"'> "+(i+1)+"</div>");
+	for(var i = 0, quiz_number = 0; i < num_quizzes; i++)
+		//Display only published quizzes
+		if(data.quizzes[i].isPublished) {
+			quiz_number++;
+			$(".quiz_list").append("<div class = 'quiz_item' quiz_id = '"+i+"'> "+quiz_number+"</div>");
+		}
 
 	/*If many quizzes present, toggle scrolling*/
 	if($(".quiz_list").height() > $(".quiz_list_wrapper").height())
@@ -48,7 +52,7 @@ function publish_all_quizzes() {
 
 	/*Displays data for the first quiz by default*/
 	$(".quiz_item").first().addClass("active");
-	publish_question_list(data.quizzes[0]);
+	publish_question_list(data.quizzes[0].questions);
 
 	/*On clicking a quiz, display question list of that quiz*/
 	$(".quiz_item").click(function() {
@@ -57,7 +61,7 @@ function publish_all_quizzes() {
 		$(this).addClass("active");
 
 		var quiz_id = $(this).attr("quiz_id");
-		publish_question_list(data.quizzes[quiz_id]);
+		publish_question_list(data.quizzes[quiz_id].questions);
 	});
 }
 
@@ -124,11 +128,11 @@ function publish_question(question_data) {
 			  Else, give hint */
 			if(question_data.answers[answer_id].isCorrect) {
 				$("div[answer_id = "+answer_id+"]").removeClass("processing").addClass("correct");
-				$(".hints").append("<div> Explanation: "+question_data.explanation+"</div>");
+				$(".hints").append("<div>"+question_data.explanation+"</div>");
 			}
 			else {
 				$("div[answer_id = "+answer_id+"]").removeClass("processing").addClass("wrong");
-				$(".hints").append("<div> Hint: "+question_data.hint+"</div>");
+				$(".hints").append("<div>"+question_data.hint+"</div>");
 			}
 
 			refresh_mathjax();

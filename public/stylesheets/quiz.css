@@ -5,7 +5,7 @@ body {
 }
 
 .header {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 
@@ -13,6 +13,7 @@ body {
 	height: 52px;
 
 	background-color: #14314F;
+	z-index: 1;
 }
 
 .logo {
@@ -66,12 +67,12 @@ body {
 }
 
 .sidebar {
-	position: absolute;
+	position: fixed;
 	top: 52px;
 	left: 0;
 	bottom: 0;
 
-	width: 190px;
+	width: 230px;
 
 	background-color: #CFE0F4;
 	overflow: auto;
@@ -99,7 +100,7 @@ body {
 .question_display {
 	position: absolute;
 	top: 52px;   /*Height of header*/
-	left: 190px; /*Width of sidebar*/
+	left: 230px; /*Width of sidebar*/
 	right: 0;
 	bottom: 0;
 
